@@ -86,9 +86,7 @@
       cursor: pointer;
     }
 
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
+    h1, h2 {
       background: linear-gradient(to right, #00ffe0, #ff00c8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -128,6 +126,8 @@
       text-decoration: none;
       color: inherit;
       box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      position: relative;
+      user-select: none;
     }
 
     .game-card:hover {
@@ -144,6 +144,28 @@
 
     .game-card span {
       font-size: 0.95rem;
+    }
+
+    /* Star icon style */
+    .star-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #ffdd00;
+      user-select: none;
+      transition: transform 0.2s;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+    }
+
+    .star-icon:hover {
+      transform: scale(1.3);
+    }
+
+    .starred {
+      color: #ffd700;
+      filter: drop-shadow(0 0 3px gold);
     }
 
     @media (max-width: 768px) {
@@ -181,68 +203,95 @@
   <div class="main-content">
     <h1>Choose a Game</h1>
     <input type="text" id="gameSearch" placeholder="Search games..." />
-    <div class="menu">
-      <a href="games/3dbowling.html" class="game-card">
-        <img src="thumbnails/3dbowling.jpeg" alt="3D Bowling" />
-        <span>3D Bowling</span>
-      </a>
-      <a href="games/amongus.html" class="game-card">
-        <img src="thumbnails/amongus.jpeg" alt="Among Us" />
-        <span>Among Us</span>
-      </a>
-      <a href="games/ballistic.html" class="game-card">
-        <img src="thumbnails/ballistic.jpeg" alt="Ballistic" />
-        <span>Ballistic</span>
-      </a>
-      <a href="games/bitlife.html" class="game-card">
-        <img src="thumbnails/bitlife.jpeg" alt="BitLife" />
-        <span>BitLife</span>
-      </a>
-      <a href="games/cuttherope.html" class="game-card">
-        <img src="thumbnails/cuttherope.jpeg" alt="Cut the Rope" />
-        <span>Cut the Rope</span>
-      </a>
-      <a href="games/drawthehill.html" class="game-card">
-        <img src="thumbnails/drawthehill.jpeg" alt="Draw the Hill" />
-        <span>Draw the Hill</span>
-      </a>
-      <a href="games/drivemad.html" class="game-card">
-        <img src="thumbnails/drivemad.jpeg" alt="Drive Mad" />
-        <span>Drive Mad</span>
-      </a>
-      <a href="games/fnaf.html" class="game-card">
-        <img src="thumbnails/fnaf.jpeg" alt="FNAF" />
-        <span>FNAF</span>
-      </a>
-      <a href="games/motox3m.html" class="game-card">
-        <img src="thumbnails/motox3m.jpeg" alt="Moto X3M" />
-        <span>Moto X3M</span>
-      </a>
-      <a href="games/paperio.html" class="game-card">
-        <img src="thumbnails/paperio.jpeg" alt="Paper.io" />
-        <span>Paper.io</span>
-      </a>
-      <a href="games/stickmangolf.html" class="game-card">
-        <img src="thumbnails/stickmangolf.jpeg" alt="Stickman Golf" />
-        <span>Stickman Golf</span>
-      </a>
-      <a href="games/stickmanhook.html" class="game-card">
-        <img src="thumbnails/stickmanhook.jpeg" alt="Stickman Hook" />
-        <span>Stickman Hook</span>
-      </a>
-      <a href="games/subwaysurfers.html" class="game-card">
-        <img src="thumbnails/subwaysurfers.jpeg" alt="Subway Surfers" />
-        <span>Subway Surfers</span>
-      </a>
-      <a href="games/templerun.html" class="game-card">
-        <img src="thumbnails/templerun.jpeg" alt="Temple Run" />
-        <span>Temple Run</span>
-      </a>
-      <a href="games/tinyfishing.html" class="game-card">
-        <img src="thumbnails/tinyfishing.jpeg" alt="Tiny Fishing" />
-        <span>Tiny Fishing</span>
-      </a>
-    </div>
+
+    <!-- Starred Games Section -->
+    <section id="starredSection" style="margin-bottom: 3rem;">
+      <h2>⭐ Starred Games</h2>
+      <div class="menu" id="starredGames"></div>
+    </section>
+
+    <!-- All Games Section -->
+    <section id="allGamesSection">
+      <h2>All Games</h2>
+      <div class="menu" id="allGames">
+        <!-- Game cards below -->
+        <a href="games/3dbowling.html" class="game-card" data-game="3dbowling">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/3dbowling.jpeg" alt="3D Bowling" />
+          <span>3D Bowling</span>
+        </a>
+        <a href="games/amongus.html" class="game-card" data-game="amongus">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/amongus.jpeg" alt="Among Us" />
+          <span>Among Us</span>
+        </a>
+        <a href="games/ballistic.html" class="game-card" data-game="ballistic">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/ballistic.jpeg" alt="Ballistic" />
+          <span>Ballistic</span>
+        </a>
+        <a href="games/bitlife.html" class="game-card" data-game="bitlife">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/bitlife.jpeg" alt="BitLife" />
+          <span>BitLife</span>
+        </a>
+        <a href="games/cuttherope.html" class="game-card" data-game="cuttherope">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/cuttherope.jpeg" alt="Cut the Rope" />
+          <span>Cut the Rope</span>
+        </a>
+        <a href="games/drawthehill.html" class="game-card" data-game="drawthehill">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/drawthehill.jpeg" alt="Draw the Hill" />
+          <span>Draw the Hill</span>
+        </a>
+        <a href="games/drivemad.html" class="game-card" data-game="drivemad">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/drivemad.jpeg" alt="Drive Mad" />
+          <span>Drive Mad</span>
+        </a>
+        <a href="games/fnaf.html" class="game-card" data-game="fnaf">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/fnaf.jpeg" alt="FNAF" />
+          <span>FNAF</span>
+        </a>
+        <a href="games/motox3m.html" class="game-card" data-game="motox3m">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/motox3m.jpeg" alt="Moto X3M" />
+          <span>Moto X3M</span>
+        </a>
+        <a href="games/paperio.html" class="game-card" data-game="paperio">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/paperio.jpeg" alt="Paper.io" />
+          <span>Paper.io</span>
+        </a>
+        <a href="games/stickmangolf.html" class="game-card" data-game="stickmangolf">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/stickmangolf.jpeg" alt="Stickman Golf" />
+          <span>Stickman Golf</span>
+        </a>
+        <a href="games/stickmanhook.html" class="game-card" data-game="stickmanhook">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/stickmanhook.jpeg" alt="Stickman Hook" />
+          <span>Stickman Hook</span>
+        </a>
+        <a href="games/subwaysurfers.html" class="game-card" data-game="subwaysurfers">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/subwaysurfers.jpeg" alt="Subway Surfers" />
+          <span>Subway Surfers</span>
+        </a>
+        <a href="games/templerun.html" class="game-card" data-game="templerun">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/templerun.jpeg" alt="Temple Run" />
+          <span>Temple Run</span>
+        </a>
+        <a href="games/tinyfishing.html" class="game-card" data-game="tinyfishing">
+          <div class="star-icon" title="Star/unstar this game">☆</div>
+          <img src="thumbnails/tinyfishing.jpeg" alt="Tiny Fishing" />
+          <span>Tiny Fishing</span>
+        </a>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -255,15 +304,96 @@
 
     lucide.createIcons();
 
-    // Search logic
+    // Get elements
     const searchInput = document.getElementById("gameSearch");
+    const allGamesContainer = document.getElementById("allGames");
+    const starredGamesContainer = document.getElementById("starredGames");
+
+    // Load starred games from localStorage or start empty
+    let starredGames = JSON.parse(localStorage.getItem("starredGames") || "[]");
+
+    // Function to save starred games
+    function saveStarredGames() {
+      localStorage.setItem("starredGames", JSON.stringify(starredGames));
+    }
+
+    // Function to update star icons on all cards and show starred in starredGamesContainer
+    function updateStarredDisplay() {
+      // Clear starred games container
+      starredGamesContainer.innerHTML = "";
+
+      // Loop all game cards
+      document.querySelectorAll(".game-card").forEach(card => {
+        const gameId = card.dataset.game;
+
+        // Check if starred
+        if (starredGames.includes(gameId)) {
+          // Add star class to icon
+          const starIcon = card.querySelector(".star-icon");
+          starIcon.textContent = "★";
+          starIcon.classList.add("starred");
+
+          // Clone the card for starred container
+          const clone = card.cloneNode(true);
+
+          // Remove href to prevent navigation on starred section (optional)
+          clone.removeAttribute("href");
+
+          // Remove duplicate event listener by cloning star icon properly
+          const cloneStar = clone.querySelector(".star-icon");
+          cloneStar.addEventListener("click", () => toggleStar(gameId));
+          starredGamesContainer.appendChild(clone);
+        } else {
+          // Not starred
+          const starIcon = card.querySelector(".star-icon");
+          starIcon.textContent = "☆";
+          starIcon.classList.remove("starred");
+        }
+      });
+    }
+
+    // Toggle star/unstar for a game
+    function toggleStar(gameId) {
+      const index = starredGames.indexOf(gameId);
+      if (index > -1) {
+        starredGames.splice(index, 1); // remove star
+      } else {
+        starredGames.push(gameId); // add star
+      }
+      saveStarredGames();
+      updateStarredDisplay();
+    }
+
+    // Attach click event to star icons on all cards
+    document.querySelectorAll(".game-card .star-icon").forEach(starIcon => {
+      const card = starIcon.closest(".game-card");
+      const gameId = card.dataset.game;
+      starIcon.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleStar(gameId);
+      });
+    });
+
+    // Search logic
     searchInput.addEventListener("input", () => {
       const term = searchInput.value.toLowerCase();
-      document.querySelectorAll(".game-card").forEach(card => {
+
+      // Filter all games by name
+      document.querySelectorAll("#allGames .game-card").forEach(card => {
+        const name = card.querySelector("span").textContent.toLowerCase();
+        card.style.display = name.includes(term) ? "block" : "none";
+      });
+
+      // Filter starred games by name
+      document.querySelectorAll("#starredGames .game-card").forEach(card => {
         const name = card.querySelector("span").textContent.toLowerCase();
         card.style.display = name.includes(term) ? "block" : "none";
       });
     });
+
+    // Initial display update on page load
+    updateStarredDisplay();
   </script>
 </body>
 </html>
