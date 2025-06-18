@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GameZone Menu</title>
+  <title>GameZone</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
       --bg-color: #1f1c2c;
@@ -24,84 +25,155 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       display: flex;
-      flex-direction: column;
-      align-items: center;
       min-height: 100vh;
-      padding-bottom: 2rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: #111827;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5rem;
+      color: #00ffe0;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .nav-link:hover {
+      background-color: #1f2937;
+    }
+
+    .nav-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .theme-toggle {
+      margin-top: auto;
+      margin-left: 1rem;
+      padding: 10px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
     }
 
     h1 {
-      font-size: 3rem;
-      margin: 2rem 0 1rem;
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
       background: linear-gradient(to right, #00ffe0, #ff00c8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: var(--card-bg);
-      color: var(--text-color);
-      font-size: 0.9rem;
-    }
-
     .menu {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.5rem;
-      width: 90%;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      width: 100%;
       max-width: 1000px;
+      margin: auto;
     }
 
     .game-card {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 1rem;
+      border-radius: 12px;
+      padding: 0.75rem;
       text-align: center;
       transition: 0.3s;
       text-decoration: none;
       color: inherit;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
     }
 
     .game-card:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
     }
 
     .game-card img {
       width: 100%;
-      height: 140px;
+      height: 100px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 8px;
       margin-bottom: 0.5rem;
     }
 
     .game-card span {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+
+      .theme-toggle {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
 <body data-theme="dark">
-  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
-  <h1>🔥 Welcome to GameZone</h1>
-  <div class="menu">
-    <a href="dino.html" class="game-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Dino Game" />
-      <span>🦖 Dino Game</span>
-    </a>
-    <a href="2048.html" class="game-card">
-      <img src="https://play-lh.googleusercontent.com/BtvBqfYRS8Uw8MtaQxjY7VjWkn4YxCK1nl0FCGo2rDjDVPYfefWkA0A1Z8eLjlLxqdM=w240-h480-rw" alt="2048" />
-      <span>🔢 2048</span>
-    </a>
+  <div class="sidebar">
+    <h2>🕹️ GameZone</h2>
+    <a class="nav-link" href="#"><i data-lucide="home"></i> Home</a>
+    <a class="nav-link" href="#"><i data-lucide="gamepad-2"></i> Games</a>
+    <a class="nav-link" href="#"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="#"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="#"><i data-lucide="settings"></i> Settings</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
+
+  <div class="main-content">
+    <h1>Choose a Game</h1>
+    <div class="menu">
+      <a href="dino.html" class="game-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Dino Game" />
+        <span>🦖 Dino Game</span>
+      </a>
+      <a href="2048.html" class="game-card">
+        <img src="https://play-lh.googleusercontent.com/BtvBqfYRS8Uw8MtaQxjY7VjWkn4YxCK1nl0FCGo2rDjDVPYfefWkA0A1Z8eLjlLxqdM=w240-h480-rw" alt="2048" />
+        <span>🔢 2048</span>
+      </a>
+    </div>
   </div>
 
   <script>
@@ -111,6 +183,8 @@
       const next = current === "dark" ? "light" : "dark";
       body.setAttribute("data-theme", next);
     }
+
+    lucide.createIcons(); // Initialize Lucide icons
   </script>
 </body>
 </html>
