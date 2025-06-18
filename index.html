@@ -3,87 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🔥 GameZone</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
+  <title>GameZone Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #1f1c2c;
+      --text-color: white;
+      --card-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f7f7f7;
+      --text-color: #111;
+      --card-bg: rgba(0, 0, 0, 0.05);
+    }
+
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
-      color: white;
-      min-height: 100vh;
+      font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
+      padding-bottom: 2rem;
     }
 
     h1 {
-      font-family: 'Orbitron', sans-serif;
       font-size: 3rem;
-      margin: 2rem 0;
+      margin: 2rem 0 1rem;
       background: linear-gradient(to right, #00ffe0, #ff00c8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .game-container {
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 0.9rem;
+    }
+
+    .menu {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-      padding: 2rem;
-      width: 100%;
-      max-width: 1200px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      width: 90%;
+      max-width: 1000px;
     }
 
     .game-card {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
       backdrop-filter: blur(10px);
-      border-radius: 20px;
+      border-radius: 15px;
       padding: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      transition: 0.3s;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
 
     .game-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(0,0,0,0.7);
+      transform: scale(1.05);
     }
 
-    .game-card h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.4rem;
+    .game-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
       margin-bottom: 0.5rem;
     }
 
-    iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 500px) {
-      iframe {
-        height: 200px;
-      }
+    .game-card span {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
     }
   </style>
 </head>
-<body>
-  <h1>🔥 GameZone</h1>
-  <div class="game-container">
-    <div class="game-card">
-      <h2>Dino Game</h2>
-      <iframe src="https://chromedino.com/" title="Dino Game"></iframe>
-    </div>
-    <div class="game-card">
-      <h2>2048</h2>
-      <iframe src="https://play2048.co/" title="2048"></iframe>
-    </div>
-    <div class="game-card">
-      <h2>Tetris</h2>
-      <iframe src="https://tetris.com/play-tetris" title="Tetris"></iframe>
-    </div>
+<body data-theme="dark">
+  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  <h1>🔥 Welcome to GameZone</h1>
+  <div class="menu">
+    <a href="dino.html" class="game-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Dino Game" />
+      <span>🦖 Dino Game</span>
+    </a>
+    <a href="2048.html" class="game-card">
+      <img src="https://play-lh.googleusercontent.com/BtvBqfYRS8Uw8MtaQxjY7VjWkn4YxCK1nl0FCGo2rDjDVPYfefWkA0A1Z8eLjlLxqdM=w240-h480-rw" alt="2048" />
+      <span>🔢 2048</span>
+    </a>
   </div>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      body.setAttribute("data-theme", next);
+    }
+  </script>
 </body>
 </html>
