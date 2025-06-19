@@ -8,8 +8,6 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Override or extend some styles specifically for AI selector */
-
     .ai-selector {
       margin-top: 2rem;
       display: grid;
@@ -68,7 +66,6 @@
       opacity: 0.75;
       margin: 0;
     }
-
   </style>
 </head>
 <body data-theme="dark">
@@ -76,9 +73,9 @@
     <h2>🕹️ <span style="background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oscar Jeej GameZone</span></h2>
     <a class="nav-link" href="../index.html"><i data-lucide="home"></i> Home</a>
     <a class="nav-link" href="../games.html"><i data-lucide="gamepad-2"></i> Games</a>
-    <a class="nav-link" href="proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
-    <a class="nav-link" href="ai/index.html"><i data-lucide="bot"></i> AI Chatbot</a>
-    <a class="nav-link" href="settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <a class="nav-link" href="../proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="../ai/index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="../settings/index.html"><i data-lucide="settings"></i> Settings</a>
     <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
   </div>
 
@@ -89,26 +86,26 @@
     </p>
 
     <div class="ai-selector">
-      <div class="ai-card" onclick="selectAI('ai1')">
-        <img src="images/ai1.png" alt="AI 1 Logo" />
+      <div class="ai-card" onclick="selectAI('neon')">
+        <img src="images/ai1.png" alt="NeonBot Logo" />
         <h3>NeonBot</h3>
         <p>Futuristic assistant with a neon touch. Great for tech and sci-fi chat.</p>
       </div>
 
-      <div class="ai-card" onclick="selectAI('ai2')">
-        <img src="images/ai2.png" alt="AI 2 Logo" />
+      <div class="ai-card" onclick="selectAI('friendly')">
+        <img src="images/ai2.png" alt="FriendlyBot Logo" />
         <h3>FriendlyBot</h3>
         <p>Warm and approachable, perfect for casual and friendly conversations.</p>
       </div>
 
-      <div class="ai-card" onclick="selectAI('ai3')">
-        <img src="images/ai3.png" alt="AI 3 Logo" />
+      <div class="ai-card" onclick="selectAI('wise')">
+        <img src="images/ai3.png" alt="WiseBot Logo" />
         <h3>WiseBot</h3>
         <p>Knowledgeable and insightful, ideal for educational and research topics.</p>
       </div>
 
-      <div class="ai-card" onclick="selectAI('ai4')">
-        <img src="images/ai4.png" alt="AI 4 Logo" />
+      <div class="ai-card" onclick="selectAI('fun')">
+        <img src="images/ai4.png" alt="FunBot Logo" />
         <h3>FunBot</h3>
         <p>Playful and humorous, always ready to entertain and joke around.</p>
       </div>
@@ -123,11 +120,16 @@
       body.setAttribute("data-theme", next);
     }
 
-    function selectAI(aiId) {
-      // Example: Redirect to different AI chatbot pages or load AI
-      // For now just alert to demo
-      alert(`You selected ${aiId}. Implement AI loading here.`);
-      // Or: window.location.href = `chatbots/${aiId}.html`;
+    function selectAI(aiKey) {
+      const modelMap = {
+        neon: 'openai/gpt-4-turbo',                  // High-performance tech chat
+        friendly: 'anthropic/claude-3-haiku',         // Chill Claude bot
+        wise: 'google/gemini-pro',                    // Google Gemini for insights
+        fun: 'mistral/mistral-7b-instruct'            // Smaller/faster playful model
+      };
+
+      const model = modelMap[aiKey] || 'openai/gpt-3.5-turbo';
+      window.location.href = `chat.html?model=${encodeURIComponent(model)}`;
     }
 
     lucide.createIcons();
