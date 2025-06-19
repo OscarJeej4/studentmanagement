@@ -1,0 +1,58 @@
+<!-- ai/index.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Chatbots</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>AI Bots</h2>
+    <a class="nav-link" href="../index.html"><i data-lucide="home"></i> Home</a>
+    <a class="nav-link" href="../games.html"><i data-lucide="gamepad-2"></i> Games</a>
+    <a class="nav-link" href="../proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link active" href="index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="../settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
+
+  <div class="main-content">
+    <h1>Select an AI</h1>
+    <div class="bot-grid" id="botList">
+      <!-- Dynamically filled by JS -->
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const bots = [
+      { id: "gpt-4", name: "GPT-4", img: "img/gpt4.png" },
+      { id: "llama-3", name: "LLaMA 3", img: "img/llama3.png" },
+      { id: "gemini", name: "Gemini", img: "img/gemini.png" }
+    ];
+
+    const botList = document.getElementById("botList");
+
+    bots.forEach(bot => {
+      const link = document.createElement("a");
+      link.href = `chat.html?bot=${bot.id}`;
+      link.className = "bot-card";
+      link.innerHTML = `
+        <img src="${bot.img}" alt="${bot.name}">
+        <span>${bot.name}</span>
+      `;
+      botList.appendChild(link);
+    });
+
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+    }
+  </script>
+</body>
+</html>
