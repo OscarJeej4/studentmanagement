@@ -1,58 +1,136 @@
-<!-- ai/index.html -->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Chatbots</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oscar Jeej AI Chatbot Selector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Override or extend some styles specifically for AI selector */
+
+    .ai-selector {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ai-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .ai-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px #00ffe0, 0 0 30px #ff00c8;
+    }
+
+    .ai-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      border-radius: 12px;
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.4));
+    }
+
+    .ai-card h3 {
+      margin: 0;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.2rem;
+    }
+
+    .ai-card p {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.75;
+      margin: 0;
+    }
+
+  </style>
 </head>
-<body>
+<body data-theme="dark">
   <div class="sidebar">
-    <h2>AI Bots</h2>
+    <h2>🕹️ <span style="background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oscar Jeej GameZone</span></h2>
     <a class="nav-link" href="../index.html"><i data-lucide="home"></i> Home</a>
     <a class="nav-link" href="../games.html"><i data-lucide="gamepad-2"></i> Games</a>
-    <a class="nav-link" href="../proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
-    <a class="nav-link active" href="index.html"><i data-lucide="bot"></i> AI Chatbot</a>
-    <a class="nav-link" href="../settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <a class="nav-link" href="proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="ai/index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="settings/index.html"><i data-lucide="settings"></i> Settings</a>
     <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
   </div>
 
   <div class="main-content">
-    <h1>Select an AI</h1>
-    <div class="bot-grid" id="botList">
-      <!-- Dynamically filled by JS -->
+    <h1>Choose Your AI Chatbot</h1>
+    <p style="max-width: 600px; margin: auto;">
+      Select one of the AI assistants below to start chatting. Each AI has its own style and specialties.
+    </p>
+
+    <div class="ai-selector">
+      <div class="ai-card" onclick="selectAI('ai1')">
+        <img src="images/ai1.png" alt="AI 1 Logo" />
+        <h3>NeonBot</h3>
+        <p>Futuristic assistant with a neon touch. Great for tech and sci-fi chat.</p>
+      </div>
+
+      <div class="ai-card" onclick="selectAI('ai2')">
+        <img src="images/ai2.png" alt="AI 2 Logo" />
+        <h3>FriendlyBot</h3>
+        <p>Warm and approachable, perfect for casual and friendly conversations.</p>
+      </div>
+
+      <div class="ai-card" onclick="selectAI('ai3')">
+        <img src="images/ai3.png" alt="AI 3 Logo" />
+        <h3>WiseBot</h3>
+        <p>Knowledgeable and insightful, ideal for educational and research topics.</p>
+      </div>
+
+      <div class="ai-card" onclick="selectAI('ai4')">
+        <img src="images/ai4.png" alt="AI 4 Logo" />
+        <h3>FunBot</h3>
+        <p>Playful and humorous, always ready to entertain and joke around.</p>
+      </div>
     </div>
   </div>
 
   <script>
-    lucide.createIcons();
-
-    const bots = [
-      { id: "gpt-4", name: "GPT-4", img: "img/gpt4.png" },
-      { id: "llama-3", name: "LLaMA 3", img: "img/llama3.png" },
-      { id: "gemini", name: "Gemini", img: "img/gemini.png" }
-    ];
-
-    const botList = document.getElementById("botList");
-
-    bots.forEach(bot => {
-      const link = document.createElement("a");
-      link.href = `chat.html?bot=${bot.id}`;
-      link.className = "bot-card";
-      link.innerHTML = `
-        <img src="${bot.img}" alt="${bot.name}">
-        <span>${bot.name}</span>
-      `;
-      botList.appendChild(link);
-    });
-
     function toggleTheme() {
       const body = document.body;
       const current = body.getAttribute("data-theme");
-      body.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+      const next = current === "dark" ? "light" : "dark";
+      body.setAttribute("data-theme", next);
     }
+
+    function selectAI(aiId) {
+      // Example: Redirect to different AI chatbot pages or load AI
+      // For now just alert to demo
+      alert(`You selected ${aiId}. Implement AI loading here.`);
+      // Or: window.location.href = `chatbots/${aiId}.html`;
+    }
+
+    lucide.createIcons();
   </script>
 </body>
 </html>
