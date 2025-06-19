@@ -1,0 +1,98 @@
+/* ai/style.css */
+body {
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.4s, color 0.4s;
+}
+
+:root {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --card: #1e1e2e;
+  --hover: #3f3f5e;
+  --accent: #00ffd5;
+}
+[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #222;
+  --card: #f0f0f0;
+  --hover: #ddd;
+  --accent: #0070f3;
+}
+
+.sidebar {
+  position: fixed;
+  width: 220px;
+  height: 100%;
+  background: var(--card);
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+}
+.sidebar h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-link:hover,
+.nav-link.active {
+  background: var(--hover);
+  border-radius: 10px;
+}
+.nav-link i {
+  margin-right: 10px;
+}
+
+.theme-toggle {
+  margin-top: 20px;
+  width: 100%;
+  background: var(--accent);
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 30px;
+}
+.bot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+.bot-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.3s, background 0.3s;
+}
+.bot-card:hover {
+  transform: scale(1.05);
+  background: var(--hover);
+}
+.bot-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.bot-card span {
+  margin-top: 10px;
+  font-size: 1.1em;
+}
