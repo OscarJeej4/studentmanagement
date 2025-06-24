@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #111827;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5rem;
+      background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .nav-link:hover {
+      background-color: #1f2937;
+    }
+
+    .nav-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+    }
+
+    .chat-box {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .messages {
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .message {
+      margin-bottom: 0.75rem;
+    }
+
+    .user {
+      text-align: right;
+      color: #00ffe0;
+    }
+
+    .ai {
+      text-align: left;
+      color: #ff00c8;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    button {
+      background: #00ffe0;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      color: #111;
+    }
+
+    .theme-toggle {
+      margin-top: auto;
+      margin-left: 1rem;
+      padding: 10px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="sidebar">
+    <h2>🕹️ <span style="background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oscar Jeej GameZone</span></h2>
+    <a class="nav-link" href="../index.html"><i data-lucide="home"></i> Home</a>
+    <a class="nav-link" href="../games.html"><i data-lucide="gamepad-2"></i> Games</a>
+    <a class="nav-link" href="../proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="../settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
+
+  <div class="main-content">
+    <h1>Talk to JeejAI</h1>
+    <div class="chat-box">
+      <div class="messages" id="messages"></div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Ask me anything..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      body.setAttribute("data-theme", next);
+    }
+
+    lucide.createIcons();
+
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage('user', text);
+      input.value = '';
+
+      const res = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await res.json();
+      addMessage('ai', data.reply);
+    }
+
+    function addMessage(sender, text) {
+      const messages = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = `message ${sender}`;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
