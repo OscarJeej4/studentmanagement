@@ -21,16 +21,12 @@
       font-family: 'Orbitron', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      min-height: 100vh;
-    }
-
-    .container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
       padding: 2rem;
-      transition: all 0.3s ease;
     }
 
     h1 {
@@ -83,59 +79,49 @@
     .fullscreen-btn:hover {
       background: linear-gradient(to right, #ff00c8, #00ffe0);
     }
-
-    /* Theater mode */
-    .theater-mode {
-      padding: 0 !important;
-    }
-
-    .theater-mode .game-frame {
-      width: 100vw;
-      height: 100vh;
-      max-width: none;
-      border-radius: 0;
-    }
-
-    .theater-mode h1,
-    .theater-mode .fullscreen-btn,
-    .theater-mode .back-link {
-      position: absolute;
-      z-index: 2;
-      top: 10px;
-      left: 10px;
-    }
-
-    .theater-mode .fullscreen-btn {
-      left: auto;
-      right: 10px;
-    }
-
-    .theater-mode .back-link {
-      top: auto;
-      bottom: 10px;
-    }
   </style>
 </head>
 <body data-theme="dark">
-  <div class="container" id="pageContainer">
-    <h1>1V1 LOL</h1>
+  <h1>1V1 LOL</h1>
 
-    <iframe id="gameFrame" src="https://geography-20.github.io/repo2/lesson-244/" class="game-frame" allowfullscreen></iframe>
+  <!-- Replace src with your actual embedded game URL or path -->
+  <iframe id="gameFrame" src="https://geography-20.github.io/repo2/lesson-244/" class="game-frame" allowfullscreen></iframe>
 
-    <button class="fullscreen-btn" id="fullscreenToggle">Enter Fullscreen</button>
-    <a class="back-link" href="../games.html">← Back to Home</a>
-  </div>
+  <button class="fullscreen-btn" id="fullscreenToggle">Enter Fullscreen</button>
+  <a class="back-link" href="../games.html">← Back to Home</a>
+
 
   <script>
     const btn = document.getElementById('fullscreenToggle');
-    const container = document.getElementById('pageContainer');
-
-    let isTheater = false;
+    const iframe = document.getElementById('gameFrame');
 
     btn.addEventListener('click', () => {
-      isTheater = !isTheater;
-      container.classList.toggle('theater-mode', isTheater);
-      btn.textContent = isTheater ? 'Exit Fullscreen' : 'Enter Fullscreen';
+      if (!document.fullscreenElement) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) { /* Safari */
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { /* IE11 */
+          iframe.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msExitFullscreen();
+        }
+      }
+    });
+
+    // Update button text based on fullscreen state
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        btn.textContent = 'Exit Fullscreen';
+      } else {
+        btn.textContent = 'Enter Fullscreen';
+      }
     });
   </script>
 </body>
