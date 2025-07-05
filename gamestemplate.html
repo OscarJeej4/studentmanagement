@@ -1,52 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <title>Loading Game...</title>
+  <meta charset="UTF-8">
+  <title>Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background-color: #1f1c2c;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
     }
     iframe {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       border: none;
     }
   </style>
 </head>
 <body>
-  <script>
-    // Unscramble: shift all letters back by 1
-    function unscrambleUrl(str) {
-      return str.split('')
-        .map(c => {
-          if (c >= 'a' && c <= 'z') return String.fromCharCode((c.charCodeAt(0) - 97 + 25) % 26 + 97);
-          if (c >= 'A' && c <= 'Z') return String.fromCharCode((c.charCodeAt(0) - 65 + 25) % 26 + 65);
-          return c;
-        })
-        .join('');
-    }
+  <iframe id="gameFrame" allowfullscreen></iframe>
 
+  <script>
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title") || "Game";
-    const scrambled = params.get("src");
+    const src = params.get("src");
 
-    if (!scrambled) {
-      document.body.innerHTML = "<h1 style='color: white;'>Missing game source.</h1>";
+    if (!src) {
+      document.body.innerHTML = "<h1>Missing game source.</h1>";
     } else {
-      const decoded = decodeURIComponent(scrambled);
-      const url = unscrambleUrl(decoded);
+      const isRepo = src.startsWith("repo/");
+      const base = isRepo
+        ? "https://geography-20.github.io/"
+        : "https://oscarjeej4.github.io/";
+      const fullUrl = base + src;
 
       document.title = title;
-
-      const iframe = document.createElement("iframe");
-      iframe.src = url;
-      document.body.appendChild(iframe);
+      document.getElementById("gameFrame").src = fullUrl;
     }
   </script>
 </body>
