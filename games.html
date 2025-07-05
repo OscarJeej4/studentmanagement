@@ -200,7 +200,7 @@
 
     function createGameCard(game) {
       const a = document.createElement("a");
-      a.href = `play.html?game=${encodeURIComponent(game.title)}`;
+      a.href = `gamestemplate.html?game=${encodeURIComponent(game.title)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
 
