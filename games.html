@@ -206,7 +206,7 @@
     function createGameCard(game) {
       const scrambledSrc = scrambleUrl(game.embed); // assume `embed` key holds the game iframe URL
       const a = document.createElement("a");
-      a.href = `play.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(scrambledSrc)}`;
+      a.href = `gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(scrambledSrc)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
 
