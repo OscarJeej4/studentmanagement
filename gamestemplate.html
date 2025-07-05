@@ -6,7 +6,6 @@
   <title>Grades and Attendance</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
-    /* Your existing styles here */
     :root {
       --bg-color: #1f1c2c;
       --text-color: white;
@@ -83,57 +82,53 @@
   <a class="back-link" href="../games.html">← Back to Home</a>
 
   <script>
-    const jsonUrl = 'gameData.json'; // Replace with your actual JSON file path or URL
+    function unscrambleUrl(scrambled) {
+      try {
+        const reversed = scrambled.split("").reverse().join("");
+        return atob(reversed);
+      } catch (e) {
+        console.error("Invalid scramble format", e);
+        return null;
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const embedUrl = unscrambleUrl(params.get("src"));
 
     const iframe = document.getElementById('gameFrame');
     const pageTitle = document.getElementById('pageTitle');
     const btn = document.getElementById('fullscreenToggle');
 
-    fetch(jsonUrl)
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load JSON');
-        return response.json();
-      })
-      .then(data => {
-        if (data.url) {
-          iframe.src = data.url;
-        } else {
-          iframe.src = 'about:blank';
-        }
-        pageTitle.textContent = data.title || 'No Title Provided';
-      })
-      .catch(err => {
-        console.error(err);
-        iframe.src = 'about:blank';
-        pageTitle.textContent = 'Error loading game data';
-      });
+    if (embedUrl) {
+      iframe.src = embedUrl;
+      pageTitle.textContent = "Game Viewer";
+    } else {
+      iframe.src = 'about:blank';
+      pageTitle.textContent = "Invalid or Missing Game URL";
+    }
 
     btn.addEventListener('click', () => {
       if (!document.fullscreenElement) {
         if (iframe.requestFullscreen) {
           iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) { /* Safari */
+        } else if (iframe.webkitRequestFullscreen) {
           iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) { /* IE11 */
+        } else if (iframe.msRequestFullscreen) {
           iframe.msRequestFullscreen();
         }
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
+        } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
+        } else if (document.msExitFullscreen) {
           document.msExitFullscreen();
         }
       }
     });
 
     document.addEventListener('fullscreenchange', () => {
-      if (document.fullscreenElement) {
-        btn.textContent = 'Exit Fullscreen';
-      } else {
-        btn.textContent = 'Enter Fullscreen';
-      }
+      btn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen';
     });
   </script>
 </body>
