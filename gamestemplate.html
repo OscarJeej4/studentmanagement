@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grades and Attendance</title>
+  <title>Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -41,7 +41,6 @@
       border: none;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
     }
     .back-link {
       margin-top: 1.5rem;
@@ -66,7 +65,6 @@
       cursor: pointer;
       user-select: none;
       box-shadow: 0 0 10px rgba(0,255,255,0.7);
-      transition: background 0.3s;
     }
     .fullscreen-btn:hover {
       background: linear-gradient(to right, #ff00c8, #00ffe0);
@@ -75,9 +73,7 @@
 </head>
 <body data-theme="dark">
   <h1 id="pageTitle">Loading...</h1>
-
   <iframe id="gameFrame" class="game-frame" allowfullscreen></iframe>
-
   <button class="fullscreen-btn" id="fullscreenToggle">Enter Fullscreen</button>
   <a class="back-link" href="../games.html">← Back to Home</a>
 
@@ -87,48 +83,36 @@
         const reversed = scrambled.split("").reverse().join("");
         return atob(reversed);
       } catch (e) {
-        console.error("Invalid scramble format", e);
+        console.error("Failed to unscramble URL:", e);
         return null;
       }
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const embedUrl = unscrambleUrl(params.get("src"));
+    const params = new URLSearchParams(location.search);
+    const scrambledSrc = params.get("src");
+    const decodedTitle = params.get("title") || "Unknown Game";
 
-    const iframe = document.getElementById('gameFrame');
-    const pageTitle = document.getElementById('pageTitle');
-    const btn = document.getElementById('fullscreenToggle');
+    const decodedUrl = unscrambleUrl(scrambledSrc);
+    const frame = document.getElementById("gameFrame");
+    const titleEl = document.getElementById("pageTitle");
 
-    if (embedUrl) {
-      iframe.src = embedUrl;
-      pageTitle.textContent = "Game Viewer";
+    if (decodedUrl) {
+      frame.src = decodedUrl;
     } else {
-      iframe.src = 'about:blank';
-      pageTitle.textContent = "Invalid or Missing Game URL";
+      frame.src = "about:blank";
     }
 
-    btn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      }
+    titleEl.textContent = decodeURIComponent(decodedTitle);
+
+    document.getElementById("fullscreenToggle").addEventListener("click", () => {
+      if (frame.requestFullscreen) frame.requestFullscreen();
+      else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+      else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
     });
 
-    document.addEventListener('fullscreenchange', () => {
-      btn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen';
+    document.addEventListener("fullscreenchange", () => {
+      const btn = document.getElementById("fullscreenToggle");
+      btn.textContent = document.fullscreenElement ? "Exit Fullscreen" : "Enter Fullscreen";
     });
   </script>
 </body>
