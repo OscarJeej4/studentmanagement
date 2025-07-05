@@ -199,9 +199,17 @@
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
     function scrambleUrl(url) {
-    return btoa(url).split('').reverse().join('')
+      return url.split('')
+        .map(c => {
+          if (c >= 'a' && c <= 'z') return String.fromCharCode((c.charCodeAt(0) - 97 + 1) % 26 + 97);
+          if (c >= 'A' && c <= 'Z') return String.fromCharCode((c.charCodeAt(0) - 65 + 1) % 26 + 65);
+          return c; // leave numbers, punctuation as is
+        })
+      .join('');
     }
-    console.log(scrambleUrl("https://example.com/game.html"));
+
+
+
 
 
     function createGameCard(game) {
