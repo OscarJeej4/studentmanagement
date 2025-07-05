@@ -75,7 +75,7 @@
   </style>
 </head>
 <body data-theme="dark">
-  <h1 id="pageTitle">3D Backrooms</h1>
+  <h1 id="pageTitle">Loading...</h1>
 
   <iframe id="gameFrame" class="game-frame" allowfullscreen></iframe>
 
@@ -83,22 +83,30 @@
   <a class="back-link" href="../games.html">← Back to Home</a>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const iframeUrl = params.get('url');
-    const title = params.get('title') || 'Embedded Page';
+    const jsonUrl = 'gameData.json'; // Replace with your actual JSON file path or URL
 
     const iframe = document.getElementById('gameFrame');
     const pageTitle = document.getElementById('pageTitle');
     const btn = document.getElementById('fullscreenToggle');
 
-    if (iframeUrl) {
-      iframe.src = iframeUrl;
-    } else {
-      iframe.src = 'about:blank';
-      pageTitle.textContent = 'No URL Provided';
-    }
-
-    pageTitle.textContent = title;
+    fetch(jsonUrl)
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load JSON');
+        return response.json();
+      })
+      .then(data => {
+        if (data.url) {
+          iframe.src = data.url;
+        } else {
+          iframe.src = 'about:blank';
+        }
+        pageTitle.textContent = data.title || 'No Title Provided';
+      })
+      .catch(err => {
+        console.error(err);
+        iframe.src = 'about:blank';
+        pageTitle.textContent = 'Error loading game data';
+      });
 
     btn.addEventListener('click', () => {
       if (!document.fullscreenElement) {
