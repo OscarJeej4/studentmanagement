@@ -1,3 +1,4 @@
+<!-- Save this as games.html -->
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -7,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
+    /* ... your existing styles remain unchanged ... */
     :root {
       --bg-color: #1f1c2c;
       --text-color: white;
@@ -194,12 +196,11 @@
     const gameSearch = document.getElementById("gameSearch");
     const allGamesEl = document.getElementById("allGames");
     const starredGamesEl = document.getElementById("starredGames");
-
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
     function createGameCard(game) {
       const a = document.createElement("a");
-      a.href = game.url;
+      a.href = `play.html?game=${encodeURIComponent(game.title)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
 
@@ -210,6 +211,7 @@
 
       star.onclick = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (starred.has(game.title)) {
           starred.delete(game.title);
         } else {
@@ -251,8 +253,8 @@
     fetch("games.json")
       .then(res => res.json())
       .then(data => {
-        window.gameData = data.games;
-        renderGames(data.games);
+        window.gameData = data.games || data; // fallback if array not nested in "games"
+        renderGames(window.gameData);
       });
 
     function toggleTheme() {
