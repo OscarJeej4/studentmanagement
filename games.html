@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    /* ... your existing styles remain unchanged ... */
     :root {
       --bg-color: #1f1c2c;
       --text-color: white;
@@ -198,18 +197,25 @@
     const starredGamesEl = document.getElementById("starredGames");
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
+    // Caesar cipher scramble with shift 1
     function scrambleUrl(url) {
-      const base64 = btoa(url);
-      return base64.split("").reverse().join("");
+      return url.split("").map(char => {
+        if (char >= 'a' && char <= 'z') {
+          return String.fromCharCode((char.charCodeAt(0) - 97 + 1) % 26 + 97);
+        } else if (char >= 'A' && char <= 'Z') {
+          return String.fromCharCode((char.charCodeAt(0) - 65 + 1) % 26 + 65);
+        } else {
+          return char;
+        }
+      }).join('');
     }
 
     function createGameCard(game) {
-      const scrambledSrc = scrambleUrl(game.embed); // assume `embed` key holds the game iframe URL
+      const scrambledSrc = scrambleUrl(game.embed);
       const a = document.createElement("a");
       a.href = `gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(scrambledSrc)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
-
 
       const star = document.createElement("div");
       star.className = "star-icon";
@@ -260,7 +266,7 @@
     fetch("games.json")
       .then(res => res.json())
       .then(data => {
-        window.gameData = data.games || data; // fallback if array not nested in "games"
+        window.gameData = data.games || data;
         renderGames(window.gameData);
       });
 
