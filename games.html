@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Games Directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-color: #1f1c2c;
+      --text-color: white;
+      --card-bg: rgba(255, 255, 255, 0.1);
+    }
+    [data-theme="light"] {
+      --bg-color: #f7f7f7;
+      --text-color: #111;
+      --card-bg: rgba(0, 0, 0, 0.05);
+    }
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #111827;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+    .nav-link:hover {
+      background-color: #1f2937;
+    }
+    .nav-link svg {
+      width: 18px;
+      height: 18px;
+    }
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      padding: 3rem 2rem;
+    }
+    .theme-toggle {
+      margin-top: auto;
+      margin-left: 1rem;
+      padding: 10px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+    h1, h2 {
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #gameSearch {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px 15px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      color: var(--text-color);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .game-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 0.75rem;
+      text-align: center;
+      transition: 0.3s;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      position: relative;
+      user-select: none;
+    }
+    .game-card:hover {
+      transform: scale(1.04);
+    }
+    .game-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .game-card span {
+      font-size: 0.95rem;
+    }
+    .star-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #ffdd00;
+      user-select: none;
+      transition: transform 0.2s;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+    }
+    .star-icon:hover {
+      transform: scale(1.3);
+    }
+    .starred {
+      color: #ffd700;
+      filter: drop-shadow(0 0 3px gold);
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+      .theme-toggle {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>🕹️ <span>Oscar Jeej GameZone</span></h2>
+    <a class="nav-link" href="index.html"><i data-lucide="home"></i> Home</a>
+    <a class="nav-link" href="games.html"><i data-lucide="gamepad-2"></i> Games</a>
+    <a class="nav-link" href="proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="ai/index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
+
+  <div class="main-content">
+    <h1>Choose a Game</h1>
+    <input type="text" id="gameSearch" placeholder="Search games..." />
+    <section id="starredSection" style="margin-bottom: 3rem;">
+      <h2>⭐ Starred Games</h2>
+      <div class="menu" id="starredGames"></div>
+    </section>
+    <section id="allGamesSection">
+      <h2>All Games</h2>
+      <div class="menu" id="allGames"></div>
+    </section>
+  </div>
+
+  <script>
+    const gameSearch = document.getElementById("gameSearch");
+    const allGamesEl = document.getElementById("allGames");
+    const starredGamesEl = document.getElementById("starredGames");
+
+    const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
+
+    function createGameCard(game) {
+      const a = document.createElement("a");
+      a.href = game.url;
+      a.className = "game-card";
+      a.setAttribute("data-title", game.title.toLowerCase());
+
+      const star = document.createElement("div");
+      star.className = "star-icon";
+      star.innerHTML = starred.has(game.title) ? "★" : "☆";
+      if (starred.has(game.title)) star.classList.add("starred");
+
+      star.onclick = (e) => {
+        e.preventDefault();
+        if (starred.has(game.title)) {
+          starred.delete(game.title);
+        } else {
+          starred.add(game.title);
+        }
+        localStorage.setItem("starredGames", JSON.stringify([...starred]));
+        renderGames(window.gameData);
+      };
+
+      const img = document.createElement("img");
+      img.src = game.thumbnail;
+      img.alt = game.title;
+
+      const span = document.createElement("span");
+      span.textContent = game.title;
+
+      a.appendChild(star);
+      a.appendChild(img);
+      a.appendChild(span);
+      return a;
+    }
+
+    function renderGames(games) {
+      allGamesEl.innerHTML = "";
+      starredGamesEl.innerHTML = "";
+      const query = gameSearch.value.toLowerCase();
+      games.forEach(game => {
+        if (!game.title.toLowerCase().includes(query)) return;
+        const card = createGameCard(game);
+        allGamesEl.appendChild(card);
+        if (starred.has(game.title)) {
+          starredGamesEl.appendChild(card.cloneNode(true));
+        }
+      });
+    }
+
+    gameSearch.addEventListener("input", () => renderGames(window.gameData));
+
+    fetch("games.json")
+      .then(res => res.json())
+      .then(data => {
+        window.gameData = data.games;
+        renderGames(data.games);
+      });
+
+    function toggleTheme() {
+      const body = document.body;
+      body.setAttribute("data-theme", body.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
