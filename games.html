@@ -1,4 +1,3 @@
-<!-- Save this as games.html -->
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -197,27 +196,9 @@
     const starredGamesEl = document.getElementById("starredGames");
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
-    // Caesar cipher scramble with shift 1
-    function scrambleUrl(url) {
-      const base64 = btoa(url);
-      return base64.split('').map(char => {
-        if (char >= 'A' && char <= 'Z') {
-          return String.fromCharCode((char.charCodeAt(0) - 65 + 1) % 26 + 65);
-        }
-        if (char >= 'a' && char <= 'z') {
-          return String.fromCharCode((char.charCodeAt(0) - 97 + 1) % 26 + 97);
-        }
-        if (char >= '0' && char <= '9') {
-          return String.fromCharCode((char.charCodeAt(0) - 48 + 1) % 10 + 48);
-        }
-        return char; // don't touch symbols like +, /, =
-      }).join('');
-    }
-
     function createGameCard(game) {
-      const scrambledSrc = scrambleUrl(game.embed);
       const a = document.createElement("a");
-      a.href = `gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(scrambledSrc)}`;
+      a.href = `gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(game.embed)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
 
