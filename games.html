@@ -199,9 +199,10 @@
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
     function scrambleUrl(url) {
-      const base64 = btoa(url);
-      return base64.split("").reverse().join("");
+    return btoa(url).split('').reverse().join('')
     }
+    console.log(scrambleUrl("https://example.com/game.html"));
+
 
     function createGameCard(game) {
       const scrambledSrc = scrambleUrl(game.embed); // assume `embed` key holds the game iframe URL
