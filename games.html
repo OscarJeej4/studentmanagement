@@ -198,11 +198,18 @@
     const starredGamesEl = document.getElementById("starredGames");
     const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
+    function scrambleUrl(url) {
+      const base64 = btoa(url);
+      return base64.split("").reverse().join("");
+    }
+
     function createGameCard(game) {
+      const scrambledSrc = scrambleUrl(game.embed); // assume `embed` key holds the game iframe URL
       const a = document.createElement("a");
-      a.href = `gamestemplate.html?game=${encodeURIComponent(game.title)}`;
+      a.href = `play.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(scrambledSrc)}`;
       a.className = "game-card";
       a.setAttribute("data-title", game.title.toLowerCase());
+
 
       const star = document.createElement("div");
       star.className = "star-icon";
