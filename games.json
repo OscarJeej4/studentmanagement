@@ -140,5 +140,15 @@
       "thumbnail": "thumbnails/retrobowl.jpeg",
       "embed": "studentmanagagmentold/g/retro-bowl/"
     },
+    {
+      "title": "Bloons TD5",
+      "thumbnail": "thumbnails/bloonstd5.jpeg",
+      "embed": "studentmanagagmentold/g/btd5/"
+    },
+    {
+      "title": "Jetpack Joyride",
+      "thumbnail": "thumbnails/jetpackjoyride.jpeg",
+      "embed": "studentmanagagmentold/g/jetpack-joyride/"
+    }
   ]
 }
