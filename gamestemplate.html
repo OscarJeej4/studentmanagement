@@ -25,11 +25,13 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title") || "Game";
-    const src = params.get("src");
+    let src = params.get("src");
 
     if (!src) {
       document.body.innerHTML = "<h1>Missing game source.</h1>";
     } else {
+      src = decodeURIComponent(src);  // <-- Decode here
+
       const isRepo = src.startsWith("repo/");
       const base = isRepo
         ? "https://geography-20.github.io/"
