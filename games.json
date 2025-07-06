@@ -3,127 +3,127 @@
     {
       "title": "3D Backrooms",
       "thumbnail": "thumbnails/3dbackrooms.jpeg",
-      "url": "repo1/lesson-20/"
+      "embed": "repo1/lesson-20/"
     },
     {
       "title": "3D Bowling",
       "thumbnail": "thumbnails/3dbowling.jpeg",
-      "url": "repo2/lesson-374/"
+      "embed": "repo2/lesson-374/"
     },
     {
       "title": "99 Balls",
       "thumbnail": "thumbnails/99balls.jpeg",
-      "url": "repo2/lesson-245/"
+      "embed": "repo2/lesson-245/"
     },
     {
       "title": "Among Us",
       "thumbnail": "thumbnails/amongus.jpeg",
-      "url": "repo1/lesson-12/"
+      "embed": "repo1/lesson-12/"
     },
     {
       "title": "Apple Shooter",
       "thumbnail": "thumbnails/appleshooter.jpeg",
-      "url": "repo2/lesson-266/"
+      "embed": "repo2/lesson-266/"
     },
     {
       "title": "Bacon May Die",
       "thumbnail": "thumbnails/baconmaydie.jpeg",
-      "url": "repo2/lesson-269/"
+      "embed": "repo2/lesson-269/"
     },
     {
       "title": "Baldis Basics",
       "thumbnail": "thumbnails/baldisbasics.jpeg",
-      "url": "repo1/lesson-23/"
+      "embed": "repo1/lesson-23/"
     },
     {
       "title": "Ballistic",
       "thumbnail": "thumbnails/ballistic.jpeg",
-      "url": "repo3/lesson-412/"
+      "embed": "repo3/lesson-412/"
     },
     {
       "title": "BitLife",
       "thumbnail": "thumbnails/bitlife.jpeg",
-      "url": "repo3/lesson-481/"
+      "embed": "repo3/lesson-481/"
     },
     {
       "title": "CraftMine",
       "thumbnail": "thumbnails/craftmine.jpeg",
-      "url": "repo2/lesson-276/"
+      "embed": "repo2/lesson-276/"
     },
     {
       "title": "Cut the Rope",
       "thumbnail": "thumbnails/cuttherope.jpeg",
-      "url": "repo3/lesson-430/"
+      "embed": "repo3/lesson-430/"
     },
     {
       "title": "Dino Bros",
       "thumbnail": "thumbnails/dinobros.jpeg",
-      "url": "repo3/lesson-434/"
+      "embed": "repo3/lesson-434/"
     },
     {
       "title": "Draw the Hill",
       "thumbnail": "thumbnails/drawthehill.jpeg",
-      "url": "repo2/lesson-384/"
+      "embed": "repo2/lesson-384/"
     },
     {
       "title": "Drive Mad",
       "thumbnail": "thumbnails/drivemad.jpeg",
-      "url": "studentmanagagmentold/g/drivemad/"
+      "embed": "studentmanagagmentold/g/drivemad/"
     },
     {
       "title": "Elastic Face",
       "thumbnail": "thumbnails/elasticface.jpeg",
-      "url": "repo1/lesson-70/"
+      "embed": "repo1/lesson-70/"
     },
     {
       "title": "FNAF",
       "thumbnail": "thumbnails/fnaf.jpeg",
-      "url": "repo2/lesson-285/"
+      "embed": "repo2/lesson-285/"
     },
     {
       "title": "Geometry Dash",
       "thumbnail": "thumbnails/geometrydash.jpeg",
-      "url": "repo2/lesson-291/"
+      "embed": "repo2/lesson-291/"
     },
     {
       "title": "Minecraft 2018",
       "thumbnail": "thumbnails/minecraft2018.jpeg",
-      "url": "repo1/lesson-116/"
+      "embed": "repo1/lesson-116/"
     },
     {
       "title": "Moto X3M",
       "thumbnail": "thumbnails/motox3m.jpeg",
-      "url": "repo1/lesson-119/"
+      "embed": "repo1/lesson-119/"
     },
     {
       "title": "Paper.io",
       "thumbnail": "thumbnails/paperio.jpeg",
-      "url": "repo1/lesson-2/"
+      "embed": "repo1/lesson-2/"
     },
     {
       "title": "Stickman Golf",
       "thumbnail": "thumbnails/stickmangolf.jpeg",
-      "url": "repo3/lesson-471/"
+      "embed": "repo3/lesson-471/"
     },
     {
       "title": "Stickman Hook",
       "thumbnail": "thumbnails/stickmanhook.jpeg",
-      "url": "repo2/lesson-203/"
+      "embed": "repo2/lesson-203/"
     },
     {
       "title": "Subway Surfers",
       "thumbnail": "thumbnails/subwaysurfers.jpeg",
-      "url": "repo2/lesson-205/"
+      "embed": "repo2/lesson-205/"
     },
     {
       "title": "Temple Run",
       "thumbnail": "thumbnails/templerun.jpeg",
-      "url": "repo2/lesson-209/"
+      "embed": "repo2/lesson-209/"
     },
     {
       "title": "Tiny Fishing",
       "thumbnail": "thumbnails/tinyfishing.jpeg",
-      "url": "studentmanagagmentold/g/tinyfishing/"
+      "embed": "studentmanagagmentold/g/tinyfishing/"
     }
   ]
 }
