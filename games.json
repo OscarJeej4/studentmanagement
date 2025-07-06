@@ -135,5 +135,10 @@
       "thumbnail": "thumbnails/gunmayhem.jpeg",
       "embed": "studentmanagagmentold/g/gunmayhem/"
     },
+    {
+      "title": "Retro Bowl",
+      "thumbnail": "thumbnails/retrobowl.jpeg",
+      "embed": "studentmanagagmentold/g/retro-bowl/"
+    },
   ]
 }
