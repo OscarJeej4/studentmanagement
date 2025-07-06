@@ -207,7 +207,7 @@
       star.innerHTML = starred.has(game.title) ? "★" : "☆";
       if (starred.has(game.title)) star.classList.add("starred");
 
-      star.onclick = (e) => {
+      star.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (starred.has(game.title)) {
@@ -217,7 +217,7 @@
         }
         localStorage.setItem("starredGames", JSON.stringify([...starred]));
         renderGames(window.gameData);
-      };
+      });
 
       const img = document.createElement("img");
       img.src = game.thumbnail;
@@ -236,12 +236,28 @@
       allGamesEl.innerHTML = "";
       starredGamesEl.innerHTML = "";
       const query = gameSearch.value.toLowerCase();
+
       games.forEach(game => {
         if (!game.title.toLowerCase().includes(query)) return;
+
         const card = createGameCard(game);
         allGamesEl.appendChild(card);
+
         if (starred.has(game.title)) {
-          starredGamesEl.appendChild(card.cloneNode(true));
+          const clone = card.cloneNode(true);
+          const newStar = clone.querySelector(".star-icon");
+          newStar.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (starred.has(game.title)) {
+              starred.delete(game.title);
+            } else {
+              starred.add(game.title);
+            }
+            localStorage.setItem("starredGames", JSON.stringify([...starred]));
+            renderGames(window.gameData);
+          });
+          starredGamesEl.appendChild(clone);
         }
       });
     }
@@ -256,8 +272,9 @@
       });
 
     function toggleTheme() {
-      const body = document.body;
-      body.setAttribute("data-theme", body.getAttribute("data-theme") === "dark" ? "light" : "dark");
+      const html = document.documentElement;
+      const current = html.getAttribute("data-theme");
+      html.setAttribute("data-theme", current === "dark" ? "light" : "dark");
     }
 
     lucide.createIcons();
