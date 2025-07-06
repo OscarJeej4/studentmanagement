@@ -237,7 +237,12 @@
       starredGamesEl.innerHTML = "";
       const query = gameSearch.value.toLowerCase();
 
-      games.forEach(game => {
+      // Sort games alphabetically by title (case-insensitive)
+      const sortedGames = [...games].sort((a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+      );
+
+      sortedGames.forEach(game => {
         if (!game.title.toLowerCase().includes(query)) return;
 
         const card = createGameCard(game);
