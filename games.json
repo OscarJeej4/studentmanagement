@@ -164,6 +164,11 @@
       "title": "Archery World Tour",
       "thumbnail": "thumbnails/archeryworldtour.jpeg",
       "embed": "repo1/lesson-15/"
+    },
+    {
+      "title": "Endless War 3",
+      "thumbnail": "thumbnails/endlesswar3.jpeg",
+      "embed": "repo1/lesson-71/"
     }
   ]
 }
