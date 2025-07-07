@@ -159,6 +159,11 @@
       "title": "3D Free Kick",
       "thumbnail": "thumbnails/3dfreekick.jpeg",
       "embed": "repo1/lesson-5/"
+    },
+    {
+      "title": "Archery World Tour",
+      "thumbnail": "thumbnails/archeryworldtour.jpeg",
+      "embed": "repo1/lesson-15/"
     }
   ]
 }
