@@ -154,6 +154,11 @@
       "title": "Bottle Flip",
       "thumbnail": "thumbnails/bottleflip.jpeg",
       "embed": "repo2/lesson-346/"
+    },
+    {
+      "title": "3D Free Kick",
+      "thumbnail": "thumbnails/3dfreekick.jpeg",
+      "embed": "repo1/lesson-5/"
     }
   ]
 }
