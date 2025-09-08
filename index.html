@@ -1,517 +1,282 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Oscar Jeej — GameZone (iPad Dashboard)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oscar Jeej GameZone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    /* -------------------------
-       Variables & Global
-       ------------------------- */
-    :root{
-      --bg-1: #030311;
-      --bg-2: #07112a;
-      --accent: #00ffe0;
-      --accent-2: #9b5cff;
-      --glass: rgba(255,255,255,0.06);
-      --glass-2: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.6);
-      --nav-height: 96px;
-      --safe-pad: env(safe-area-inset-bottom, 20px);
-      --content-gap: 18px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    :root {
+      --bg-color: #0b0f1a;
+      --text-color: white;
+      --card-bg: rgba(255, 255, 255, 0.08);
     }
-
-    html,body{height:100%;}
-    body{
-      margin:0;
-      font-family: 'Orbitron', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color: #fff;
-      background: radial-gradient(1200px 600px at 10% 20%, rgba(43,22,69,0.25), transparent 8%),
-                  radial-gradient(1000px 500px at 90% 80%, rgba(0,255,224,0.06), transparent 6%),
-                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
-      overflow:hidden;
-      -webkit-touch-callout:none;
-      -webkit-user-select:none;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
+    [data-theme="light"] {
+      --bg-color: #f7f7f7;
+      --text-color: #111;
+      --card-bg: rgba(0, 0, 0, 0.05);
     }
-
-    /* -------------------------
-       Fullscreen canvas background
-       ------------------------- */
-    #bgCanvas{
-      position:fixed; inset:0; z-index:0; width:100%; height:100%;
-      pointer-events:none; /* don't block touches */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overflow-x: hidden;
     }
-
-    /* -------------------------
-       Loader / Boot Screen
-       ------------------------- */
-    #loader{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999;
-      background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.35));
-      flex-direction:column; gap:18px; padding:24px;
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #1a1a2e, #0b0f1a);
     }
-    .boot-text{
-      font-size:18px; letter-spacing:1px; color:var(--muted); opacity:0.95;
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
-    .boot-console{
-      width:340px; max-width:85%; padding:16px; border-radius:12px; background:rgba(0,0,0,0.45);
-      border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:13px; color:#9bead6;
+    .top-bar h1 {
+      font-size: 1.3rem;
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .boot-line{opacity:0; transform:translateY(6px); animation:bootIn 1s forwards;}
-    .boot-line:nth-child(1){animation-delay:0.45s}
-    .boot-line:nth-child(2){animation-delay:0.85s}
-    .boot-line:nth-child(3){animation-delay:1.2s}
-    @keyframes bootIn{to{opacity:1; transform:none}}
-
-    /* -------------------------
-       App shell
-       ------------------------- */
-    .app{
-      position:relative; z-index:1; width:100%; height:100%; display:flex; flex-direction:column;
+    #gameSearch {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 1rem;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: var(--card-bg);
+      color: var(--text-color);
     }
-
-    /* Top bar */
-    .topbar{
-      display:flex; align-items:center; gap:14px; padding:18px 20px; padding-top: calc(env(safe-area-inset-top, 20px));
-      z-index:2; backdrop-filter: blur(6px);
+    .dashboard {
+      padding: 1.5rem;
     }
-    .logo{
-      display:flex; align-items:center; gap:12px; cursor:default;
+    .featured-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
-    .logo .icon{
-      width:56px; height:56px; border-radius:10px; background:linear-gradient(135deg, rgba(0,255,224,0.12), rgba(155,92,255,0.08));
-      display:flex; align-items:center; justify-content:center; font-size:20px; border:1px solid rgba(255,255,255,0.04);
-      box-shadow:0 6px 22px rgba(12,8,25,0.6);
+    .featured-card img { width: 100%; height: 200px; object-fit: cover; }
+    .featured-card .overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
     }
-    .logo .title{font-size:18px; font-weight:600; letter-spacing:0.8px;}
-    .spacer{flex:1}
-    .profile{
-      display:flex; align-items:center; gap:12px; margin-right:6px;
+    .featured-card h2 { margin: 0 0 0.5rem; }
+    .featured-card button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #00ffe0;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .avatar{width:54px; height:54px; border-radius:12px; background:linear-gradient(135deg,#6a00f4,#00ffd1); display:flex; align-items:center; justify-content:center; font-weight:700;}
-
-    /* -------------------------
-       Main area: featured + rows
-       ------------------------- */
-    .main{
-      flex:1; display:flex; flex-direction:column; gap: var(--content-gap); padding:18px; padding-bottom:calc(var(--nav-height) + var(--safe-pad) + 18px);
-      overflow:auto; -webkit-overflow-scrolling:touch;
+    section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-
-    /* featured card */
-    .featured-wrap{display:flex; justify-content:center;}
-    .featured{
-      width:86%; max-width:980px; border-radius:18px; padding:20px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.04); box-shadow: 0 20px 60px rgba(2,4,20,0.6); display:flex; gap:18px; align-items:center;
-      transform-style:preserve-3d; transition: transform 250ms cubic-bezier(.2,.9,.3,1), box-shadow 250ms;
+    .game-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
     }
-    .featured .cover{width:360px; height:200px; border-radius:12px; overflow:hidden; flex-shrink:0; background-size:cover; background-position:center;}
-    .featured .meta{flex:1; display:flex; flex-direction:column; gap:8px}
-    .featured h3{margin:0; font-size:22px}
-    .featured p{margin:0; color:var(--muted); font-size:14px}
-    .play-row{display:flex; gap:12px; align-items:center; margin-top:12px}
-    .btn{padding:12px 18px; border-radius:12px; font-weight:700; cursor:pointer; border: none; background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#030311; box-shadow:0 12px 30px rgba(0,255,224,0.08);}
-
-    /* rows */
-    .row{
-      width:100%; display:flex; flex-direction:column; gap:10px; margin-top:4px;
+    .game-card {
+      flex: 0 0 140px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 0.75rem;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.3s;
     }
-    .row .row-title{font-size:15px; margin:0 6px;}
-    .carousel{
-      display:flex; gap:12px; overflow:auto; padding:12px 8px; -webkit-overflow-scrolling:touch;
+    .game-card:hover { transform: scale(1.05); }
+    .game-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
     }
-    .card{
-      min-width:220px; height:140px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 30px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden; position:relative; padding:10px;
-      transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
-      touch-action: pan-y pan-x;
+    .game-card span { font-size: 0.9rem; }
+    .star-icon {
+      position: absolute;
+      top: 8px; right: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #ffdd00;
+      user-select: none;
+      transition: transform 0.2s;
     }
-    .card .thumb{flex:1; border-radius:10px; background-size:cover; background-position:center;}
-    .card .label{margin-top:8px; font-size:13px}
-
-    .card:active{transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(0,0,0,0.6)}
-
-    /* favorite badge */
-    .fav{position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04)}
-
-    /* bottom nav */
-    .bottom-nav{
-      position:fixed; left:0; right:0; bottom:0; height:var(--nav-height); display:flex; align-items:center; justify-content:space-around; padding:12px 20px; z-index:3;
-      background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06)); backdrop-filter: blur(10px); border-top:1px solid rgba(255,255,255,0.03);
-      padding-bottom: calc(var(--safe-pad));
-      gap:10px;
+    .star-icon:hover { transform: scale(1.3); }
+    .starred { color: #ffd700; filter: drop-shadow(0 0 3px gold); }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      z-index: 5;
     }
-    .nav-item{display:flex; flex-direction:column; align-items:center; gap:6px; color:var(--muted); font-size:12px; width:64px; text-decoration:none}
-    .nav-btn{width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--glass-2); border:1px solid rgba(255,255,255,0.03)}
-
-    .nav-item.active{color:var(--accent);}
-    .nav-item.active .nav-btn{box-shadow:0 12px 30px rgba(0,255,224,0.08); border:1px solid rgba(0,255,224,0.18)}
-
-    /* responsive for iPad - bigger targets */
-    @media (min-width:768px){
-      .card{min-width:260px; height:160px}
-      .featured .cover{width:420px; height:240px}
+    .bottom-nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.3rem;
     }
-
-    /* small helper */
-    .muted{color:var(--muted)}
-
   </style>
 </head>
 <body>
-
-  <!-- Background canvas for particles / parallax -->
   <canvas id="bgCanvas"></canvas>
 
-  <!-- Loader / Boot -->
-  <div id="loader">
-    <div class="boot-text">GAMEZONE • OS: Booting console UI</div>
-    <div class="boot-console" aria-hidden>
-      <div class="boot-line">Initializing shaders...</div>
-      <div class="boot-line">Loading library: /games/featured</div>
-      <div class="boot-line">Establishing secure proxy... OK</div>
-    </div>
-  </div>
+  <header class="top-bar">
+    <h1>Oscar Jeej GameZone</h1>
+    <input type="text" id="gameSearch" placeholder="Search games..." />
+    <div class="profile"><i data-lucide="user"></i></div>
+  </header>
 
-  <div class="app" role="application">
-    <div class="topbar">
-      <div class="logo">
-        <div class="icon">🎮</div>
-        <div>
-          <div class="title">Oscar Jeej</div>
-          <div class="muted" style="font-size:12px">GameZone</div>
+  <main class="dashboard">
+    <!-- Featured Section -->
+    <section class="featured">
+      <div class="featured-card">
+        <img src="https://picsum.photos/800/200" alt="Featured Game">
+        <div class="overlay">
+          <h2>Featured Game</h2>
+          <button>Play Now</button>
         </div>
       </div>
+    </section>
 
-      <div class="spacer"></div>
+    <!-- Starred -->
+    <section id="starredSection">
+      <h2>⭐ Starred Games</h2>
+      <div class="game-row" id="starredGames"></div>
+    </section>
 
-      <div class="profile" role="group" aria-label="Profile controls">
-        <button class="btn" id="themeBtn" aria-pressed="false" title="Toggle Theme">🌗 Theme</button>
-        <div class="avatar" id="avatar">OJ</div>
-      </div>
-    </div>
+    <!-- All Games -->
+    <section id="allGamesSection">
+      <h2>All Games</h2>
+      <div class="game-row" id="allGames"></div>
+    </section>
+  </main>
 
-    <main class="main" id="main">
-
-      <section class="featured-wrap">
-        <article class="featured" id="featured" tabindex="0">
-          <div class="cover" id="featuredCover" style="background-image: url('https://images.unsplash.com/photo-1542751371-29b0f74f9713?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder');"></div>
-          <div class="meta">
-            <h3 id="featuredTitle">Nebula Runner</h3>
-            <p id="featuredDesc">A fast-paced neon runner across a drifting space-station skyline. Swipe to explore, tap Play to launch.</p>
-            <div class="play-row">
-              <button class="btn" id="playBtn">Play</button>
-              <button class="btn" id="infoBtn" style="background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04);">Info</button>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <!-- Rows: Favorites, Recently Played, All Games -->
-      <section class="row">
-        <h4 class="row-title">Favorites</h4>
-        <div class="carousel" id="favorites">
-          <!-- cards populated by JS -->
-        </div>
-      </section>
-
-      <section class="row">
-        <h4 class="row-title">Recently Played</h4>
-        <div class="carousel" id="recent">
-        </div>
-      </section>
-
-      <section class="row">
-        <h4 class="row-title">All Games</h4>
-        <div class="carousel" id="allgames">
-        </div>
-      </section>
-
-    </main>
-
-    <nav class="bottom-nav" role="navigation" aria-label="Primary">
-      <a class="nav-item active" data-section="home"><div class="nav-btn"><i data-lucide="home"></i></div><div>Home</div></a>
-      <a class="nav-item" data-section="games"><div class="nav-btn"><i data-lucide="gamepad-2"></i></div><div>Games</div></a>
-      <a class="nav-item" data-section="proxy"><div class="nav-btn"><i data-lucide="shield"></i></div><div>Proxy</div></a>
-      <a class="nav-item" data-section="ai"><div class="nav-btn"><i data-lucide="bot"></i></div><div>AI</div></a>
-      <a class="nav-item" data-section="settings"><div class="nav-btn"><i data-lucide="settings"></i></div><div>Settings</div></a>
-    </nav>
-  </div>
+  <nav class="bottom-nav">
+    <a href="index.html"><i data-lucide="home"></i></a>
+    <a href="games.html"><i data-lucide="gamepad-2"></i></a>
+    <a href="proxy/index.html"><i data-lucide="shield"></i></a>
+    <a href="ai/index.html"><i data-lucide="bot"></i></a>
+    <a href="settings/index.html"><i data-lucide="settings"></i></a>
+  </nav>
 
   <script>
-    lucide.createIcons(); // icons
-
-    /* -------------------------
-       Simple data to populate cards (replace with real data later)
-       ------------------------- */
-    const GAMES = [
-      {id:'g1', title:'Nebula Runner', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-      {id:'g2', title:'Aero Drift', img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-      {id:'g3', title:'Towerfall Blitz', img:'https://images.unsplash.com/photo-1511513650439-3f3e7b5b46b6?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-      {id:'g4', title:'Circuit Brawl', img:'https://images.unsplash.com/photo-1558981403-c3b0b7f3f3a6?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-      {id:'g5', title:'Silent Echoes', img:'https://images.unsplash.com/photo-1542751371-29b0f74f9713?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-      {id:'g6', title:'Orbit Clash', img:'https://images.unsplash.com/photo-1465101162946-4377e57745c3?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
-    ];
-
-    /* -------------------------
-       DOM populate
-       ------------------------- */
-    function makeCard(game){
-      const el = document.createElement('a');
-      el.className = 'card';
-      el.href = '#';
-      el.dataset.id = game.id;
-      el.innerHTML = `
-        <div class="fav" aria-hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></div>
-        <div class="thumb" style="background-image: url('${game.img}')"></div>
-        <div class="label">${game.title}</div>
-      `;
-      // touch effects: tilt on pointer
-      addTilt(el);
-      el.addEventListener('click', (e)=>{ e.preventDefault(); openGame(game); });
-      // long-press to favorite
-      addLongPress(el, ()=> toggleFavorite(game.id, el));
-      return el;
+    // Background particles
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener("resize", resize); resize();
+    for (let i = 0; i < 80; i++) {
+      particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2+1, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5});
     }
-
-    function populate(){
-      const fav = document.getElementById('favorites');
-      const rec = document.getElementById('recent');
-      const all = document.getElementById('allgames');
-
-      // simple split
-      GAMES.slice(0,3).forEach(g=> fav.appendChild(makeCard(g)));
-      GAMES.slice(1,5).forEach(g=> rec.appendChild(makeCard(g)));
-      GAMES.forEach(g=> all.appendChild(makeCard(g)));
-    }
-
-    populate();
-
-    /* -------------------------
-       Featured interactions
-       ------------------------- */
-    const featured = document.getElementById('featured');
-    let currentFeatured = GAMES[0];
-    function openGame(game){
-      // simple animation: expand featured to selected
-      currentFeatured = game;
-      document.getElementById('featuredTitle').textContent = game.title;
-      document.getElementById('featuredDesc').textContent = 'Tap Play to launch ' + game.title + '.';
-      document.getElementById('featuredCover').style.backgroundImage = `url('${game.img}')`;
-      // small pulse
-      featured.animate([{transform:'scale(0.995)'},{transform:'scale(1)'}],{duration:280, easing:'ease-out'});
-    }
-
-    document.querySelectorAll('.card').forEach(c=>{
-      c.addEventListener('click', ()=>{
-        const g = GAMES.find(x=> x.id === c.dataset.id);
-        openGame(g);
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "white";
+      particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if(p.x<0||p.x>canvas.width) p.dx*=-1;
+        if(p.y<0||p.y>canvas.height) p.dy*=-1;
       });
-    });
+      requestAnimationFrame(draw);
+    } draw();
 
-    document.getElementById('playBtn').addEventListener('click', ()=>{
-      // cheap UI: show a little modal / confirm
-      alert('Launching ' + currentFeatured.title + '... (placeholder)');
-    });
+    // Your existing game logic
+    const gameSearch = document.getElementById("gameSearch");
+    const allGamesEl = document.getElementById("allGames");
+    const starredGamesEl = document.getElementById("starredGames");
+    const starred = new Set(JSON.parse(localStorage.getItem("starredGames") || "[]"));
 
-    /* -------------------------
-       Favorites handling (localStorage)
-       ------------------------- */
-    function toggleFavorite(id, el){
-      let favs = JSON.parse(localStorage.getItem('g_favs')||'[]');
-      if(favs.includes(id)) favs = favs.filter(x=>x!==id); else favs.push(id);
-      localStorage.setItem('g_favs', JSON.stringify(favs));
-      // visual
-      const is = favs.includes(id);
-      const icon = el.querySelector('.fav');
-      if(is) icon.style.background = 'linear-gradient(90deg, rgba(0,255,224,0.12), rgba(155,92,255,0.12))';
-      else icon.style.background = '';
-    }
+    function createGameCard(game) {
+      const a = document.createElement("a");
+      a.href = `gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(game.embed)}`;
+      a.className = "game-card";
+      a.setAttribute("data-title", game.title.toLowerCase());
 
-    /* -------------------------
-       Long press helper for touch
-       ------------------------- */
-    function addLongPress(el, fn){
-      let t = null; let moved=false;
-      el.addEventListener('pointerdown',(e)=>{ moved=false; t = setTimeout(()=>{ fn(); }, 600); });
-      ['pointermove','pointerup','pointercancel','pointerleave'].forEach(ev=> el.addEventListener(ev,(e)=>{ if(ev==='pointermove') moved=true; if(ev!=='pointermove') { clearTimeout(t);} }));
-    }
+      const star = document.createElement("div");
+      star.className = "star-icon";
+      star.innerHTML = starred.has(game.title) ? "★" : "☆";
+      if (starred.has(game.title)) star.classList.add("starred");
 
-    /* -------------------------
-       Card tilt on touch pointermove
-       ------------------------- */
-    function addTilt(el){
-      let rect;
-      el.addEventListener('pointerenter', ()=> rect = el.getBoundingClientRect());
-      el.addEventListener('pointermove', (ev)=>{
-        if(!rect) rect = el.getBoundingClientRect();
-        const cx = rect.left + rect.width/2;
-        const cy = rect.top + rect.height/2;
-        const dx = (ev.clientX - cx) / (rect.width/2);
-        const dy = (ev.clientY - cy) / (rect.height/2);
-        const rx = (-dy * 6).toFixed(2);
-        const ry = (dx * 8).toFixed(2);
-        el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      star.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if (starred.has(game.title)) { starred.delete(game.title); } else { starred.add(game.title); }
+        localStorage.setItem("starredGames", JSON.stringify([...starred]));
+        renderGames(window.gameData);
       });
-      el.addEventListener('pointerleave', ()=> el.style.transform = 'none');
-      el.addEventListener('pointerup', ()=> el.style.transform = 'none');
+
+      const img = document.createElement("img");
+      img.src = game.thumbnail;
+      img.alt = game.title;
+      const span = document.createElement("span");
+      span.textContent = game.title;
+
+      a.appendChild(star);
+      a.appendChild(img);
+      a.appendChild(span);
+      return a;
     }
 
-    /* -------------------------
-       Bottom navigation (section switcher)
-       ------------------------- */
-    document.querySelectorAll('.nav-item').forEach(item=>{
-      item.addEventListener('click',(e)=>{
-        e.preventDefault(); document.querySelectorAll('.nav-item').forEach(i=> i.classList.remove('active'));
-        item.classList.add('active');
-        // placeholder: scroll to top for home, else small message
-        const section = item.dataset.section;
-        if(section==='home'){ document.getElementById('main').scrollTo({top:0, behavior:'smooth'}); }
-        else alert('Open "'+section+'" (not implemented in prototype)');
+    function renderGames(games) {
+      allGamesEl.innerHTML = "";
+      starredGamesEl.innerHTML = "";
+      const query = gameSearch.value.toLowerCase();
+      const sortedGames = [...games].sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+      sortedGames.forEach(game => {
+        if (!game.title.toLowerCase().includes(query)) return;
+        const card = createGameCard(game);
+        allGamesEl.appendChild(card);
+        if (starred.has(game.title)) {
+          const clone = card.cloneNode(true);
+          const newStar = clone.querySelector(".star-icon");
+          newStar.addEventListener("click", (e) => {
+            e.preventDefault(); e.stopPropagation();
+            if (starred.has(game.title)) { starred.delete(game.title); } else { starred.add(game.title); }
+            localStorage.setItem("starredGames", JSON.stringify([...starred]));
+            renderGames(window.gameData);
+          });
+          starredGamesEl.appendChild(clone);
+        }
       });
-    });
-
-    /* -------------------------
-       Background particles + parallax
-       - lightweight canvas particle system
-       - parallax responds to pointer/touch and device tilt when available
-       ------------------------- */
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-    let W=canvas.width = innerWidth; let H=canvas.height = innerHeight;
-    window.addEventListener('resize', () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
-
-    const particles = [];
-    const PCOUNT = Math.round(Math.max(40, Math.min(120, (W*H)/90000)));
-    for(let i=0;i<PCOUNT;i++){ particles.push({
-      x: Math.random()*W, y: Math.random()*H,
-      vx: (Math.random()-0.5)*0.2, vy: (Math.random()-0.5)*0.2,
-      r: 0.8+Math.random()*2.6, hue: 160 + Math.random()*80
-    });}
-
-    let parX=0, parY=0; // parallax offsets
-    let pointerX=0, pointerY=0;
-
-    function update(){
-      for(const p of particles){
-        p.x += p.vx + parX*0.02;
-        p.y += p.vy + parY*0.02;
-        if(p.x < -20) p.x = W+20; if(p.x > W+20) p.x = -20;
-        if(p.y < -20) p.y = H+20; if(p.y > H+20) p.y = -20;
-      }
     }
 
-    function draw(){
-      ctx.clearRect(0,0,W,H);
-      // subtle starfield
-      for(const p of particles){
-        ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue}, 90%, 60%, 0.08)`; ctx.arc(p.x + parX*0.6, p.y + parY*0.6, p.r, 0, Math.PI*2); ctx.fill();
-      }
-      // glow blob near pointer
-      const gRad = Math.max(80, Math.min(240, Math.hypot(W,H)*0.06));
-      const grd = ctx.createRadialGradient(pointerX, pointerY, 0, pointerX, pointerY, gRad);
-      grd.addColorStop(0, 'rgba(0,255,224,0.08)');
-      grd.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
-    }
+    gameSearch.addEventListener("input", () => renderGames(window.gameData));
+    fetch("games.json").then(res => res.json()).then(data => { window.gameData = data.games || data; renderGames(window.gameData); });
 
-    function loop(){ update(); draw(); requestAnimationFrame(loop); }
-    loop();
-
-    // pointer moves affect parallax
-    window.addEventListener('pointermove', (e)=>{
-      pointerX = e.clientX; pointerY = e.clientY; parX = (e.clientX - W/2)/ (W/2); parY = (e.clientY - H/2)/ (H/2);
-    });
-
-    // device orientation for tilt-based parallax (optional)
-    if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function'){
-      // iOS 13+ requires permission - request on user gesture (theme button)
-      document.getElementById('themeBtn').addEventListener('click', async ()=>{
-        try{
-          const resp = await DeviceOrientationEvent.requestPermission();
-          if(resp === 'granted') window.addEventListener('deviceorientation', tiltHandler);
-        }catch(e){ console.warn('tilt permission denied', e) }
-        toggleTheme();
-      }, {once:true});
-    } else {
-      window.addEventListener('deviceorientation', tiltHandler);
-    }
-
-    function tiltHandler(e){
-      // gamma: left-right tilt (-90..90), beta: front-back (-180..180)
-      const gx = e.gamma || 0; const gy = e.beta || 0;
-      parX = gx/30; parY = gy/30;
-    }
-
-    // small ripple on taps
-    window.addEventListener('pointerdown', (e)=>{
-      ripple(e.clientX, e.clientY);
-    });
-
-    function ripple(x,y){
-      const start = performance.now();
-      const dur = 600;
-      const maxR = Math.max(W,H)*0.8;
-      function step(t){
-        const dt = (t-start)/dur; if(dt>1) return;
-        // draw a quick transient circle in overlay
-        ctx.beginPath(); ctx.strokeStyle = `rgba(155,92,255,${1-dt})`; ctx.lineWidth = 2+20* (1-dt); ctx.arc(x + parX*0.6, y + parY*0.6, maxR*dt, 0, Math.PI*2); ctx.stroke();
-        requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    /* -------------------------
-       Simple theme toggle: flips CSS variables and pulses background colors
-       ------------------------- */
-    let dark = true;
-    function toggleTheme(){
-      dark = !dark;
-      document.body.style.transition = 'background 450ms ease';
-      if(!dark){
-        document.body.style.background = 'linear-gradient(180deg, #f6f7fb 0%, #eef2ff 100%)';
-        document.documentElement.style.setProperty('--accent', '#ff7ab6');
-        document.documentElement.style.setProperty('--accent-2', '#ffd166');
-        document.documentElement.style.setProperty('--muted','rgba(0,0,0,0.6)');
-      } else {
-        document.body.style.background = '';
-        document.documentElement.style.setProperty('--accent','#00ffe0');
-        document.documentElement.style.setProperty('--accent-2','#9b5cff');
-        document.documentElement.style.setProperty('--muted','rgba(255,255,255,0.6)');
-      }
-    }
-
-    // also attach to theme button normal click (non-tilt permission)
-    document.getElementById('themeBtn').addEventListener('click', ()=>{
-      // if deviceorientation permission handled above, it will request there (once)
-      if(typeof DeviceOrientationEvent.requestPermission !== 'function') toggleTheme();
-    });
-
-    /* -------------------------
-       Finish loader when page ready
-       ------------------------- */
-    window.addEventListener('load', ()=>{
-      const ld = document.getElementById('loader');
-      ld.style.transition = 'opacity 420ms ease, transform 420ms ease';
-      ld.style.opacity = '0'; ld.style.transform = 'translateY(-8px)';
-      setTimeout(()=> ld.remove(), 520);
-    });
-
-    /* -------------------------
-       Accessibility: allow keyboard navigation to cards
-       ------------------------- */
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight') document.getElementById('main').scrollBy({left:300, top:0, behavior:'smooth'});
-      if(e.key === 'ArrowLeft') document.getElementById('main').scrollBy({left:-300, top:0, behavior:'smooth'});
-    });
-
+    lucide.createIcons();
   </script>
 </body>
 </html>
