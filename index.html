@@ -2,81 +2,68 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Oscar Jeej GameZone</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
-:root {
-  --bg-color: #0b0f1a;
-  --text-color: white;
-  --card-bg: rgba(255,255,255,0.08);
+:root{
+  --bg-color:#0b0f1a;
+  --text-color:white;
+  --card-bg:rgba(255,255,255,0.08);
+  --accent:#00ffe0;
+  --accent-2:#9b5cff;
+  --muted:rgba(255,255,255,0.6);
+  --nav-height:96px;
+  --safe-pad:env(safe-area-inset-bottom,20px);
+  --content-gap:18px;
 }
-[data-theme="light"] {
-  --bg-color: #f7f7f7;
-  --text-color: #111;
-  --card-bg: rgba(0,0,0,0.05);
+[data-theme="light"]{
+  --bg-color:#f7f7f7;
+  --text-color:#111;
+  --card-bg:rgba(0,0,0,0.05);
+  --accent:#ff7ab6;
+  --accent-2:#ffd166;
+  --muted:rgba(0,0,0,0.6);
 }
-* { box-sizing: border-box; }
-body {
+
+body{
   margin:0;
-  font-family: 'Orbitron', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  font-family:'Orbitron',sans-serif;
+  background-color:var(--bg-color);
+  color:var(--text-color);
   overflow-x:hidden;
 }
-canvas#waveCanvas {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:-1;
+
+canvas#waveCanvas{
+  position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
 }
-.top-bar {
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
-  position: sticky;
-  top:0;
-  z-index:5;
-  border-radius: 0 0 16px 16px;
+
+.top-bar{
+  display:flex; align-items:center; gap:14px; padding:18px 20px; backdrop-filter:blur(6px); position:sticky; top:0; z-index:5;
 }
-.top-bar h1 {
-  font-size: 1.3rem;
-  background: linear-gradient(to right, #00ffe0, #ff00c8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.top-bar h1{
+  font-size:1.3rem;
+  background:linear-gradient(to right,#00ffe0,#ff00c8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
-#gameSearch {
-  flex:1;
-  max-width:400px;
-  margin:0 1rem;
-  padding:10px 15px;
-  border-radius:12px;
-  border:none;
-  background: var(--card-bg);
-  color: var(--text-color);
+#gameSearch{
+  flex:1; max-width:400px; padding:10px 15px; border-radius:12px; border:none; background:var(--card-bg); color:var(--text-color);
 }
-.dashboard { padding:1.5rem; }
-.featured-card {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom:2rem;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
+
+.dashboard{padding:1.5rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem;}
+
+.featured-card{
+  grid-column:1/-1;
+  position:relative; border-radius:16px; overflow:hidden; box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
-.featured-card img {
-  width:100%; height:200px; object-fit:cover;
+.featured-card img{width:100%; height:200px; object-fit:cover;}
+.featured-card .overlay{
+  position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
 }
-.featured-card .overlay {
-  position:absolute; bottom:0; left:0; right:0;
-  padding:1rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-}
-.featured-card h2 { margin:0 0 0.5rem; }
-.featured-card button {
+.featured-card h2{margin:0 0 0.5rem;}
+.featured-card button{
   padding:0.5rem 1rem;
   border:none;
   border-radius:8px;
@@ -85,183 +72,130 @@ canvas#waveCanvas {
   font-weight:bold;
   cursor:pointer;
 }
-section { margin-bottom:2.5rem; }
-h2 {
-  font-size:1.1rem;
-  margin-bottom:1rem;
-  background: linear-gradient(to right,#00ffe0,#ff00c8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+
+.game-card{
+  display:flex; flex-direction:column; align-items:center; gap:0.5rem; padding:0.75rem;
+  border-radius:16px; background:var(--card-bg); backdrop-filter:blur(10px);
+  box-shadow:0 0 12px rgba(0,0,0,0.2); text-decoration:none; color:inherit; transition:transform 0.2s;
 }
-.game-list { display:flex; flex-direction:column; gap:1rem; }
-.game-card {
-  display:flex;
-  align-items:center;
-  gap:1rem;
-  padding:1rem;
-  border-radius:16px;
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  box-shadow:0 0 12px rgba(0,0,0,0.2);
-  text-decoration:none;
-  color:inherit;
-  transition: transform 0.2s;
+.game-card:hover{transform:translateY(-3px);}
+.game-card img{width:100%; height:120px; object-fit:cover; border-radius:12px;}
+.game-card span{font-size:0.95rem; font-weight:600; text-align:center;}
+.star-icon{font-size:22px; cursor:pointer; user-select:none; position:absolute; top:8px; right:8px;}
+.starred{color:#ffd700; filter:drop-shadow(0 0 3px gold);}
+
+.bottom-nav{
+  position:fixed; left:0; right:0; bottom:0; height:var(--nav-height);
+  display:flex; align-items:center; justify-content:space-around;
+  background: rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:5;
 }
-.game-card:hover { transform: translateY(-3px); }
-.game-card img { width:120px; height:80px; object-fit:cover; border-radius:12px; }
-.game-card span { font-size:1rem; font-weight:600; flex:1; }
-.star-icon { font-size:22px; cursor:pointer; user-select:none; }
-.starred { color:#ffd700; filter: drop-shadow(0 0 3px gold); }
-.bottom-nav {
-  position:fixed;
-  bottom:0; left:0; right:0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  display:flex;
-  justify-content:space-around;
-  padding:0.5rem 0;
-  z-index:5;
-}
-.bottom-nav a { color:white; text-decoration:none; font-size:1.3rem; }
+.bottom-nav a{color:white; text-decoration:none; font-size:1.3rem;}
 </style>
 </head>
 <body>
-
 <canvas id="waveCanvas"></canvas>
 
 <header class="top-bar">
 <h1>Oscar Jeej GameZone</h1>
-<input type="text" id="gameSearch" placeholder="Search games..." />
+<input type="text" id="gameSearch" placeholder="Search games..."/>
 <div class="profile"><i data-lucide="user"></i></div>
 </header>
 
-<main class="dashboard">
-  <section class="featured">
-    <div class="featured-card">
-      <img src="https://picsum.photos/800/200" alt="Featured Game">
-      <div class="overlay">
-        <h2>Featured Game</h2>
-        <button>Play Now</button>
-      </div>
+<main class="dashboard" id="dashboard">
+  <div class="featured-card">
+    <img src="https://picsum.photos/800/200" alt="Featured Game"/>
+    <div class="overlay">
+      <h2>Featured Game</h2>
+      <button>Play Now</button>
     </div>
-  </section>
-
-  <section id="starredSection">
-    <h2>⭐ Starred Games</h2>
-    <div class="game-list" id="starredGames"></div>
-  </section>
-
-  <section id="allGamesSection">
-    <h2>All Games</h2>
-    <div class="game-list" id="allGames"></div>
-  </section>
+  </div>
 </main>
 
 <nav class="bottom-nav">
-<a href="index.html"><i data-lucide="home"></i></a>
-<a href="games.html"><i data-lucide="gamepad-2"></i></a>
-<a href="proxy/index.html"><i data-lucide="shield"></i></a>
-<a href="ai/index.html"><i data-lucide="bot"></i></a>
-<a href="settings/index.html"><i data-lucide="settings"></i></a>
+<a href="#"><i data-lucide="home"></i></a>
+<a href="#"><i data-lucide="gamepad-2"></i></a>
+<a href="#"><i data-lucide="shield"></i></a>
+<a href="#"><i data-lucide="bot"></i></a>
+<a href="#"><i data-lucide="settings"></i></a>
 </nav>
 
 <script>
-// Animated waves background
+// Lucide icons
+lucide.createIcons();
+
+// Wave background
 const canvas = document.getElementById("waveCanvas");
 const ctx = canvas.getContext("2d");
-let width, height;
-function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
-window.addEventListener("resize", resize); resize();
+let W=canvas.width=innerWidth,H=canvas.height=innerHeight;
+window.addEventListener("resize",()=>{W=canvas.width=innerWidth; H=canvas.height=innerHeight;});
 
-const waveCount = 3;
-const waves = [];
+const waveCount=3;
+const waves=[];
 for(let i=0;i<waveCount;i++){
-  waves.push({y:height/2, amplitude:30 + i*10, wavelength: 150 + i*50, speed:0.02 + i*0.01, phase:0, color:`rgba(${50+i*50},${100+i*30},255,0.3)`});
+  waves.push({y:H/2, amplitude:30+i*10, wavelength:150+i*50, speed:0.02+i*0.01, phase:0, color:`rgba(${50+i*50},${100+i*30},255,0.3)`});
 }
-
 function drawWaves(){
-  ctx.clearRect(0,0,width,height);
+  ctx.clearRect(0,0,W,H);
   waves.forEach(w=>{
     ctx.beginPath();
-    for(let x=0;x<width;x++){
+    for(let x=0;x<W;x++){
       const y = w.y + Math.sin((x/w.wavelength)+w.phase)*w.amplitude;
       ctx.lineTo(x,y);
     }
-    ctx.strokeStyle = w.color;
-    ctx.lineWidth=3;
-    ctx.stroke();
-    w.phase += w.speed;
+    ctx.strokeStyle=w.color; ctx.lineWidth=3; ctx.stroke();
+    w.phase+=w.speed;
   });
   requestAnimationFrame(drawWaves);
 }
 drawWaves();
 
 // Game logic
+const GAMES = [
+  {title:'Nebula Runner', thumbnail:'https://picsum.photos/220/140?1', embed:'#'},
+  {title:'Aero Drift', thumbnail:'https://picsum.photos/220/140?2', embed:'#'},
+  {title:'Towerfall Blitz', thumbnail:'https://picsum.photos/220/140?3', embed:'#'},
+  {title:'Circuit Brawl', thumbnail:'https://picsum.photos/220/140?4', embed:'#'},
+  {title:'Silent Echoes', thumbnail:'https://picsum.photos/220/140?5', embed:'#'},
+  {title:'Orbit Clash', thumbnail:'https://picsum.photos/220/140?6', embed:'#'}
+];
+
+const dashboard = document.getElementById('dashboard');
 const gameSearch = document.getElementById("gameSearch");
-const allGamesEl = document.getElementById("allGames");
-const starredGamesEl = document.getElementById("starredGames");
-const starred = new Set(JSON.parse(localStorage.getItem("starredGames")||"[]"));
+const starredGames = new Set(JSON.parse(localStorage.getItem("starredGames")||"[]"));
 
-function createGameCard(game){
-  const a = document.createElement("a");
-  a.href=`gamestemplate.html?title=${encodeURIComponent(game.title)}&src=${encodeURIComponent(game.embed)}`;
+function createCard(game){
+  const a=document.createElement("a");
   a.className="game-card";
+  a.href=game.embed;
   a.setAttribute("data-title", game.title.toLowerCase());
-
-  const img = document.createElement("img");
-  img.src=game.thumbnail;
-  img.alt=game.title;
-
-  const span = document.createElement("span");
-  span.textContent = game.title;
-
+  a.innerHTML = `<img src="${game.thumbnail}" alt="${game.title}"><span>${game.title}</span>`;
   const star = document.createElement("div");
   star.className="star-icon";
-  star.innerHTML = starred.has(game.title)?"★":"☆";
-  if(starred.has(game.title)) star.classList.add("starred");
+  star.innerHTML = starredGames.has(game.title)?"★":"☆";
+  if(starredGames.has(game.title)) star.classList.add("starred");
   star.addEventListener("click",e=>{
     e.preventDefault(); e.stopPropagation();
-    if(starred.has(game.title)){ starred.delete(game.title); } else { starred.add(game.title); }
-    localStorage.setItem("starredGames", JSON.stringify([...starred]));
-    renderGames(window.gameData);
+    if(starredGames.has(game.title)) starredGames.delete(game.title); else starredGames.add(game.title);
+    localStorage.setItem("starredGames", JSON.stringify([...starredGames]));
+    renderGames();
   });
-
-  a.appendChild(img);
-  a.appendChild(span);
   a.appendChild(star);
   return a;
 }
 
-function renderGames(games){
-  allGamesEl.innerHTML=""; starredGamesEl.innerHTML="";
-  const query = gameSearch.value.toLowerCase();
-  const sortedGames = [...games].sort((a,b)=>a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
-  sortedGames.forEach(game=>{
+function renderGames(){
+  // remove old cards but keep featured card
+  dashboard.querySelectorAll(".game-card").forEach(c=>c.remove());
+  const query=gameSearch.value.toLowerCase();
+  GAMES.forEach(game=>{
     if(!game.title.toLowerCase().includes(query)) return;
-    const card = createGameCard(game);
-    allGamesEl.appendChild(card);
-    if(starred.has(game.title)){
-      const clone = card.cloneNode(true);
-      const newStar = clone.querySelector(".star-icon");
-      newStar.addEventListener("click",e=>{
-        e.preventDefault(); e.stopPropagation();
-        if(starred.has(game.title)){ starred.delete(game.title); } else { starred.add(game.title); }
-        localStorage.setItem("starredGames", JSON.stringify([...starred]));
-        renderGames(window.gameData);
-      });
-      starredGamesEl.appendChild(clone);
-    }
+    const card=createCard(game);
+    dashboard.appendChild(card);
   });
 }
 
-gameSearch.addEventListener("input",()=>renderGames(window.gameData));
-
-fetch("games.json").then(res=>res.json()).then(data=>{
-  window.gameData = data.games || data;
-  renderGames(window.gameData);
-});
-
-lucide.createIcons();
+gameSearch.addEventListener("input",()=>renderGames());
+renderGames();
 </script>
 </body>
 </html>
