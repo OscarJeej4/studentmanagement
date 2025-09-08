@@ -39,74 +39,167 @@ canvas#waveCanvas{
   position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
 }
 
+/* Top bar layout */
 .top-bar{
-  display:flex; align-items:center; gap:14px; padding:18px 20px; backdrop-filter:blur(6px); position:sticky; top:0; z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:18px 20px;
+  backdrop-filter:blur(6px);
+  position:sticky;
+  top:0;
+  z-index:5;
 }
-.top-bar h1{
+.top-bar .title{
   font-size:1.3rem;
   background:linear-gradient(to right,#00ffe0,#ff00c8);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
+.top-bar .search-wrapper{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
 #gameSearch{
-  flex:1; max-width:400px; padding:10px 15px; border-radius:12px; border:none; background:var(--card-bg); color:var(--text-color);
+  width:100%;
+  max-width:400px;
+  padding:10px 15px;
+  border-radius:12px;
+  border:none;
+  background:var(--card-bg);
+  color:var(--text-color);
 }
 
-.dashboard{padding:1.5rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem;}
+/* Main dashboard */
+.dashboard{
+  padding:1.5rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1rem;
+}
 
+/* Featured card */
 .featured-card{
   grid-column:1/-1;
-  position:relative; border-radius:16px; overflow:hidden; box-shadow:0 0 20px rgba(0,0,0,0.4);
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
-.featured-card img{width:100%; height:200px; object-fit:cover;}
+.featured-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
 .featured-card .overlay{
-  position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:1rem;
+  background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
 }
-.featured-card h2{margin:0 0 0.5rem;}
+.featured-card h2{
+  margin:0 0 0.5rem;
+}
+.featured-card p{
+  margin:0 0 0.5rem;
+  color:var(--muted);
+  font-size:0.9rem;
+}
 .featured-card button{
   padding:0.5rem 1rem;
   border:none;
   border-radius:8px;
-  background:#00ffe0;
+  background:var(--accent);
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
   color:#000;
   font-weight:bold;
   cursor:pointer;
 }
 
+/* Game cards */
 .game-card{
-  display:flex; flex-direction:column; align-items:center; gap:0.5rem; padding:0.75rem;
-  border-radius:16px; background:var(--card-bg); backdrop-filter:blur(10px);
-  box-shadow:0 0 12px rgba(0,0,0,0.2); text-decoration:none; color:inherit; transition:transform 0.2s;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.75rem;
+  border-radius:16px;
+  background:var(--card-bg);
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 12px rgba(0,0,0,0.2);
+  text-decoration:none;
+  color:inherit;
+  transition:transform 0.2s;
 }
 .game-card:hover{transform:translateY(-3px);}
-.game-card img{width:100%; height:120px; object-fit:cover; border-radius:12px;}
-.game-card span{font-size:0.95rem; font-weight:600; text-align:center;}
-.star-icon{font-size:22px; cursor:pointer; user-select:none; position:absolute; top:8px; right:8px;}
-.starred{color:#ffd700; filter:drop-shadow(0 0 3px gold);}
-
-.bottom-nav{
-  position:fixed; left:0; right:0; bottom:0; height:var(--nav-height);
-  display:flex; align-items:center; justify-content:space-around;
-  background: rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:5;
+.game-card img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:12px;
 }
-.bottom-nav a{color:white; text-decoration:none; font-size:1.3rem;}
+.game-card span{
+  font-size:0.95rem;
+  font-weight:600;
+  text-align:center;
+}
+.star-icon{
+  font-size:22px;
+  cursor:pointer;
+  user-select:none;
+  position:absolute;
+  top:8px;
+  right:8px;
+}
+.starred{
+  color:#ffd700;
+  filter:drop-shadow(0 0 3px gold);
+}
+
+/* Bottom nav */
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:var(--nav-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter:blur(8px);
+  z-index:5;
+}
+.bottom-nav a{
+  color:white;
+  text-decoration:none;
+  font-size:1.3rem;
+}
 </style>
 </head>
 <body>
 <canvas id="waveCanvas"></canvas>
 
 <header class="top-bar">
-<h1>Oscar Jeej GameZone</h1>
-<input type="text" id="gameSearch" placeholder="Search games..."/>
+<div class="title">Oscar Jeej</div>
+<div class="search-wrapper">
+  <input type="text" id="gameSearch" placeholder="Search games...">
+</div>
 <div class="profile"><i data-lucide="user"></i></div>
 </header>
 
 <main class="dashboard" id="dashboard">
-  <div class="featured-card">
-    <img src="https://picsum.photos/800/200" alt="Featured Game"/>
+  <div class="featured-card" id="featuredCard">
+    <img src="" alt="Featured Game" id="featuredImg"/>
     <div class="overlay">
-      <h2>Featured Game</h2>
-      <button>Play Now</button>
+      <h2 id="featuredTitle">Featured Game</h2>
+      <p id="featuredDesc"></p>
+      <button id="featuredPlay">Play</button>
     </div>
   </div>
 </main>
@@ -120,47 +213,36 @@ canvas#waveCanvas{
 </nav>
 
 <script>
-// Lucide icons
 lucide.createIcons();
 
 // Wave background
 const canvas = document.getElementById("waveCanvas");
 const ctx = canvas.getContext("2d");
 let W=canvas.width=innerWidth,H=canvas.height=innerHeight;
-window.addEventListener("resize",()=>{W=canvas.width=innerWidth; H=canvas.height=innerHeight;});
-
-const waveCount=3;
+window.addEventListener("resize",()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight;});
 const waves=[];
-for(let i=0;i<waveCount;i++){
-  waves.push({y:H/2, amplitude:30+i*10, wavelength:150+i*50, speed:0.02+i*0.01, phase:0, color:`rgba(${50+i*50},${100+i*30},255,0.3)`});
+for(let i=0;i<3;i++){
+  waves.push({y:H/2,amplitude:30+i*10,wavelength:150+i*50,speed:0.02+i*0.01,phase:0,color:`rgba(${50+i*50},${100+i*30},255,0.3)`});
 }
 function drawWaves(){
   ctx.clearRect(0,0,W,H);
   waves.forEach(w=>{
     ctx.beginPath();
     for(let x=0;x<W;x++){
-      const y = w.y + Math.sin((x/w.wavelength)+w.phase)*w.amplitude;
+      const y=w.y+Math.sin((x/w.wavelength)+w.phase)*w.amplitude;
       ctx.lineTo(x,y);
     }
-    ctx.strokeStyle=w.color; ctx.lineWidth=3; ctx.stroke();
+    ctx.strokeStyle=w.color;
+    ctx.lineWidth=3;
+    ctx.stroke();
     w.phase+=w.speed;
   });
   requestAnimationFrame(drawWaves);
 }
 drawWaves();
 
-// Game logic
-const GAMES = [
-  {title:'Nebula Runner', thumbnail:'https://picsum.photos/220/140?1', embed:'#'},
-  {title:'Aero Drift', thumbnail:'https://picsum.photos/220/140?2', embed:'#'},
-  {title:'Towerfall Blitz', thumbnail:'https://picsum.photos/220/140?3', embed:'#'},
-  {title:'Circuit Brawl', thumbnail:'https://picsum.photos/220/140?4', embed:'#'},
-  {title:'Silent Echoes', thumbnail:'https://picsum.photos/220/140?5', embed:'#'},
-  {title:'Orbit Clash', thumbnail:'https://picsum.photos/220/140?6', embed:'#'}
-];
-
-const dashboard = document.getElementById('dashboard');
-const gameSearch = document.getElementById("gameSearch");
+// Game data + fetch
+let gameData = [];
 const starredGames = new Set(JSON.parse(localStorage.getItem("starredGames")||"[]"));
 
 function createCard(game){
@@ -168,34 +250,49 @@ function createCard(game){
   a.className="game-card";
   a.href=game.embed;
   a.setAttribute("data-title", game.title.toLowerCase());
-  a.innerHTML = `<img src="${game.thumbnail}" alt="${game.title}"><span>${game.title}</span>`;
-  const star = document.createElement("div");
+  a.innerHTML=`<img src="${game.thumbnail}" alt="${game.title}"><span>${game.title}</span>`;
+  const star=document.createElement("div");
   star.className="star-icon";
   star.innerHTML = starredGames.has(game.title)?"★":"☆";
   if(starredGames.has(game.title)) star.classList.add("starred");
-  star.addEventListener("click",e=>{
+  star.addEventListener("click", e=>{
     e.preventDefault(); e.stopPropagation();
-    if(starredGames.has(game.title)) starredGames.delete(game.title); else starredGames.add(game.title);
+    if(starredGames.has(game.title)) starredGames.delete(game.title);
+    else starredGames.add(game.title);
     localStorage.setItem("starredGames", JSON.stringify([...starredGames]));
     renderGames();
   });
   a.appendChild(star);
+  a.addEventListener("click",()=>openFeatured(game));
   return a;
 }
 
 function renderGames(){
-  // remove old cards but keep featured card
+  const dashboard=document.getElementById("dashboard");
   dashboard.querySelectorAll(".game-card").forEach(c=>c.remove());
-  const query=gameSearch.value.toLowerCase();
-  GAMES.forEach(game=>{
+  const query=document.getElementById("gameSearch").value.toLowerCase();
+  gameData.forEach(game=>{
     if(!game.title.toLowerCase().includes(query)) return;
     const card=createCard(game);
     dashboard.appendChild(card);
   });
 }
 
-gameSearch.addEventListener("input",()=>renderGames());
-renderGames();
+function openFeatured(game){
+  document.getElementById("featuredTitle").textContent=game.title;
+  document.getElementById("featuredDesc").textContent=game.description||"Tap Play to launch this game.";
+  document.getElementById("featuredImg").src=game.thumbnail;
+  document.getElementById("featuredPlay").onclick=()=>alert("Launching "+game.title);
+}
+
+// Fetch games.json
+fetch("games.json").then(res=>res.json()).then(data=>{
+  gameData = data.games || data;
+  if(gameData.length>0) openFeatured(gameData[0]);
+  renderGames();
+});
+
+document.getElementById("gameSearch").addEventListener("input",()=>renderGames());
 </script>
 </body>
 </html>
