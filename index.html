@@ -1,298 +1,268 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Oscar Jeej GameZone</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-:root{
-  --bg-color:#0b0f1a;
-  --text-color:white;
-  --card-bg:rgba(255,255,255,0.08);
-  --accent:#00ffe0;
-  --accent-2:#9b5cff;
-  --muted:rgba(255,255,255,0.6);
-  --nav-height:96px;
-  --safe-pad:env(safe-area-inset-bottom,20px);
-  --content-gap:18px;
-}
-[data-theme="light"]{
-  --bg-color:#f7f7f7;
-  --text-color:#111;
-  --card-bg:rgba(0,0,0,0.05);
-  --accent:#ff7ab6;
-  --accent-2:#ffd166;
-  --muted:rgba(0,0,0,0.6);
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grades and Attendance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+        :root {
+      --bg-color: #1f1c2c;
+      --text-color: white;
+      --card-bg: rgba(255, 255, 255, 0.1);
+    }
 
-body{
-  margin:0;
-  font-family:'Orbitron',sans-serif;
-  background-color:var(--bg-color);
-  color:var(--text-color);
-  overflow-x:hidden;
-}
+    [data-theme="light"] {
+      --bg-color: #f7f7f7;
+      --text-color: #111;
+      --card-bg: rgba(0, 0, 0, 0.05);
+    }
 
-canvas#waveCanvas{
-  position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-}
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      min-height: 100vh;
+    }
 
-/* Top bar layout */
-.top-bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  padding:18px 20px;
-  backdrop-filter:blur(6px);
-  position:sticky;
-  top:0;
-  z-index:5;
-}
-.top-bar .title{
-  font-size:1.3rem;
-  background:linear-gradient(to right,#00ffe0,#ff00c8);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.top-bar .search-wrapper{
-  flex:1;
-  display:flex;
-  justify-content:center;
-}
-#gameSearch{
-  width:100%;
-  max-width:400px;
-  padding:10px 15px;
-  border-radius:12px;
-  border:none;
-  background:var(--card-bg);
-  color:var(--text-color);
-}
+    .sidebar {
+      width: 220px;
+      background-color: #111827;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+    }
 
-/* Main dashboard */
-.dashboard{
-  padding:1.5rem;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:1rem;
-}
+    .sidebar h2 {
+      font-size: 1.5rem;
+      background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
 
-/* Featured card */
-.featured-card{
-  grid-column:1/-1;
-  position:relative;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
-}
-.featured-card img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-}
-.featured-card .overlay{
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:1rem;
-  background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-}
-.featured-card h2{
-  margin:0 0 0.5rem;
-}
-.featured-card p{
-  margin:0 0 0.5rem;
-  color:var(--muted);
-  font-size:0.9rem;
-}
-.featured-card button{
-  padding:0.5rem 1rem;
-  border:none;
-  border-radius:8px;
-  background:var(--accent);
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
 
-/* Game cards */
-.game-card{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:0.5rem;
-  padding:0.75rem;
-  border-radius:16px;
-  background:var(--card-bg);
-  backdrop-filter:blur(10px);
-  box-shadow:0 0 12px rgba(0,0,0,0.2);
-  text-decoration:none;
-  color:inherit;
-  transition:transform 0.2s;
-}
-.game-card:hover{transform:translateY(-3px);}
-.game-card img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-  border-radius:12px;
-}
-.game-card span{
-  font-size:0.95rem;
-  font-weight:600;
-  text-align:center;
-}
-.star-icon{
-  font-size:22px;
-  cursor:pointer;
-  user-select:none;
-  position:absolute;
-  top:8px;
-  right:8px;
-}
-.starred{
-  color:#ffd700;
-  filter:drop-shadow(0 0 3px gold);
-}
+    .nav-link:hover {
+      background-color: #1f2937;
+    }
 
-/* Bottom nav */
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:var(--nav-height);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter:blur(8px);
-  z-index:5;
-}
-.bottom-nav a{
-  color:white;
-  text-decoration:none;
-  font-size:1.3rem;
-}
-</style>
+    .nav-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      padding: 3rem 2rem;
+    }
+
+    .theme-toggle {
+      margin-top: auto;
+      margin-left: 1rem;
+      padding: 10px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    h1, h2 {
+      background: linear-gradient(to right, #00ffe0, #ff00c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #gameSearch {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px 15px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      color: var(--text-color);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 0.75rem;
+      text-align: center;
+      transition: 0.3s;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      position: relative;
+      user-select: none;
+    }
+
+    .game-card:hover {
+      transform: scale(1.04);
+    }
+
+    .game-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .game-card span {
+      font-size: 0.95rem;
+    }
+
+    /* Star icon style */
+    .star-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #ffdd00;
+      user-select: none;
+      transition: transform 0.2s;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+    }
+
+    .star-icon:hover {
+      transform: scale(1.3);
+    }
+
+    .starred {
+      color: #ffd700;
+      filter: drop-shadow(0 0 3px gold);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+
+      .theme-toggle {
+        margin-left: 0;
+      }
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex: 1;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .home-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 2rem;
+    }
+
+    .home-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 2rem 1rem;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      font-size: 1rem;
+    }
+
+    .home-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .home-card i {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
-<body>
-<canvas id="waveCanvas"></canvas>
+<body data-theme="dark">
+  <div class="sidebar">
+    <h2>🕹️ <span style="background: linear-gradient(to right, #00ffe0, #00ff6a, #ff00c8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oscar Jeej GameZone</span></h2>
+    <a class="nav-link" href="index.html"><i data-lucide="home"></i> Home</a>
+    <a class="nav-link" href="games.html"><i data-lucide="gamepad-2"></i> Games</a>
+    <a class="nav-link" href="proxy/index.html"><i data-lucide="shield"></i> Proxy</a>
+    <a class="nav-link" href="ai/index.html"><i data-lucide="bot"></i> AI Chatbot</a>
+    <a class="nav-link" href="settings/index.html"><i data-lucide="settings"></i> Settings</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  </div>
 
-<header class="top-bar">
-<div class="title">Oscar Jeej</div>
-<div class="search-wrapper">
-  <input type="text" id="gameSearch" placeholder="Search games...">
-</div>
-<div class="profile"><i data-lucide="user"></i></div>
-</header>
-
-<main class="dashboard" id="dashboard">
-  <div class="featured-card" id="featuredCard">
-    <img src="" alt="Featured Game" id="featuredImg"/>
-    <div class="overlay">
-      <h2 id="featuredTitle">Featured Game</h2>
-      <p id="featuredDesc"></p>
-      <button id="featuredPlay">Play</button>
+  <div class="main-content">
+    <h1>Welcome to Oscar Jeej GameZone</h1>
+    <p style="max-width: 600px;">Explore fun games, use the built-in AI chatbot, access proxy tools, and personalize your experience. Choose where to go:</p>
+    
+    <div class="home-menu">
+      <a href="games.html" class="home-card"><i data-lucide="gamepad-2"></i><br>Play Games</a>
+      <a href="proxy/index.html" class="home-card"><i data-lucide="shield"></i><br>Access Proxy</a>
+      <a href="ai/index.html" class="home-card"><i data-lucide="bot"></i><br>Talk to AI</a>
+      <a href="settings/index.html" class="home-card"><i data-lucide="settings"></i><br>Settings</a>
     </div>
   </div>
-</main>
 
-<nav class="bottom-nav">
-<a href="#"><i data-lucide="home"></i></a>
-<a href="#"><i data-lucide="gamepad-2"></i></a>
-<a href="#"><i data-lucide="shield"></i></a>
-<a href="#"><i data-lucide="bot"></i></a>
-<a href="#"><i data-lucide="settings"></i></a>
-</nav>
-
-<script>
-lucide.createIcons();
-
-// Wave background
-const canvas = document.getElementById("waveCanvas");
-const ctx = canvas.getContext("2d");
-let W=canvas.width=innerWidth,H=canvas.height=innerHeight;
-window.addEventListener("resize",()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight;});
-const waves=[];
-for(let i=0;i<3;i++){
-  waves.push({y:H/2,amplitude:30+i*10,wavelength:150+i*50,speed:0.02+i*0.01,phase:0,color:`rgba(${50+i*50},${100+i*30},255,0.3)`});
-}
-function drawWaves(){
-  ctx.clearRect(0,0,W,H);
-  waves.forEach(w=>{
-    ctx.beginPath();
-    for(let x=0;x<W;x++){
-      const y=w.y+Math.sin((x/w.wavelength)+w.phase)*w.amplitude;
-      ctx.lineTo(x,y);
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      body.setAttribute("data-theme", next);
     }
-    ctx.strokeStyle=w.color;
-    ctx.lineWidth=3;
-    ctx.stroke();
-    w.phase+=w.speed;
-  });
-  requestAnimationFrame(drawWaves);
-}
-drawWaves();
 
-// Game data + fetch
-let gameData = [];
-const starredGames = new Set(JSON.parse(localStorage.getItem("starredGames")||"[]"));
-
-function createCard(game){
-  const a=document.createElement("a");
-  a.className="game-card";
-  a.href=game.embed;
-  a.setAttribute("data-title", game.title.toLowerCase());
-  a.innerHTML=`<img src="${game.thumbnail}" alt="${game.title}"><span>${game.title}</span>`;
-  const star=document.createElement("div");
-  star.className="star-icon";
-  star.innerHTML = starredGames.has(game.title)?"★":"☆";
-  if(starredGames.has(game.title)) star.classList.add("starred");
-  star.addEventListener("click", e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(starredGames.has(game.title)) starredGames.delete(game.title);
-    else starredGames.add(game.title);
-    localStorage.setItem("starredGames", JSON.stringify([...starredGames]));
-    renderGames();
-  });
-  a.appendChild(star);
-  a.addEventListener("click",()=>openFeatured(game));
-  return a;
-}
-
-function renderGames(){
-  const dashboard=document.getElementById("dashboard");
-  dashboard.querySelectorAll(".game-card").forEach(c=>c.remove());
-  const query=document.getElementById("gameSearch").value.toLowerCase();
-  gameData.forEach(game=>{
-    if(!game.title.toLowerCase().includes(query)) return;
-    const card=createCard(game);
-    dashboard.appendChild(card);
-  });
-}
-
-function openFeatured(game){
-  document.getElementById("featuredTitle").textContent=game.title;
-  document.getElementById("featuredDesc").textContent=game.description||"Tap Play to launch this game.";
-  document.getElementById("featuredImg").src=game.thumbnail;
-  document.getElementById("featuredPlay").onclick=()=>alert("Launching "+game.title);
-}
-
-// Fetch games.json
-fetch("games.json").then(res=>res.json()).then(data=>{
-  gameData = data.games || data;
-  if(gameData.length>0) openFeatured(gameData[0]);
-  renderGames();
-});
-
-document.getElementById("gameSearch").addEventListener("input",()=>renderGames());
-</script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
